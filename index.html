@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AURA Atelier - Tienda de ropa de lujo, moda urbana y streetwear exclusivo. Diseños únicos, envio gratis y calidad premium.">
+  <meta name="description" content="AURA Atelier - Tienda de ropa de lujo, moda urbana y streetwear exclusivo. Diseños únicos, envío gratis y calidad premium.">
   <title>AURA Atelier | Tienda de Moda Urbana y Lujo</title>
 
   <!-- Google Fonts -->
@@ -35,16 +35,31 @@
         <ul class="nav-links">
           <li><a href="#hero" class="nav-link active">Inicio</a></li>
           <li><a href="#catalog" class="nav-link">Colección</a></li>
-          <li><a href="#perks" class="nav-link">Beneficios</a></li>
+          <li><a href="#testimonials" class="nav-link">Reseñas</a></li>
+          <li><a href="#faq" class="nav-link">Preguntas</a></li>
           <li><a href="#footer" class="nav-link">Contacto</a></li>
         </ul>
       </nav>
 
       <div class="nav-actions">
+        <!-- Theme Toggle Button -->
+        <button class="icon-btn" id="theme-toggle-btn" aria-label="Cambiar Tema">
+          <i class="fas fa-sun"></i>
+        </button>
+
+        <!-- Wishlist Button -->
+        <button class="icon-btn" id="wishlist-btn" aria-label="Ver Favoritos">
+          <i class="far fa-heart"></i>
+          <span class="badge" id="wishlist-badge">0</span>
+        </button>
+
+        <!-- Cart Button -->
         <button class="icon-btn" id="cart-btn" aria-label="Ver Carrito">
           <i class="fas fa-shopping-bag"></i>
           <span class="badge" id="cart-badge">0</span>
         </button>
+
+        <!-- Mobile Menu Toggle -->
         <button class="icon-btn mobile-toggle" id="mobile-toggle" aria-label="Menú">
           <i class="fas fa-bars"></i>
         </button>
@@ -61,6 +76,24 @@
         <p class="hero-description">
           Descubre nuestra línea exclusiva de prendas minimalistas, chaquetas de cuero confeccionadas a mano y moda urbana sostenible diseñada para destacar.
         </p>
+        
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-num">10k+</span>
+            <span class="stat-label">Clientes Felices</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num">4.9★</span>
+            <span class="stat-label">Calificación Promedio</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num">24h</span>
+            <span class="stat-label">Envío Express</span>
+          </div>
+        </div>
+
         <div class="btn-group">
           <a href="#catalog" class="btn-primary">
             Explorar Catálogo <i class="fas fa-arrow-right"></i>
@@ -120,7 +153,7 @@
         <h2 class="section-title">Colección Destacada</h2>
       </div>
 
-      <!-- Filter Tabs & Search -->
+      <!-- Filter Controls & Toolbar -->
       <div class="filter-wrapper">
         <div class="category-tabs">
           <button class="tab-btn active" data-category="all">Todos</button>
@@ -130,17 +163,34 @@
           <button class="tab-btn" data-category="ofertas">Ofertas 🔥</button>
         </div>
 
-        <div class="search-sort-box">
+        <div class="toolbar-grid">
+          <!-- Search Box -->
           <div class="search-input-group">
             <i class="fas fa-search"></i>
             <input type="text" id="search-input" class="search-input" placeholder="Buscar prenda...">
+          </div>
+
+          <!-- Price Range Slider -->
+          <div class="price-filter-box">
+            <label for="price-slider">Máx: <span id="price-value">$500</span></label>
+            <input type="range" id="price-slider" min="50" max="500" step="10" value="500">
+          </div>
+
+          <!-- Sort Select -->
+          <div class="sort-select-wrapper">
+            <select id="sort-select" class="sort-select" aria-label="Ordenar Por">
+              <option value="popular">Más Populares</option>
+              <option value="price-low">Precio: Menor a Mayor</option>
+              <option value="price-high">Precio: Mayor a Menor</option>
+              <option value="rating">Mejor Valorados</option>
+            </select>
           </div>
         </div>
       </div>
 
       <!-- Products Dynamic Grid -->
       <div class="products-grid" id="products-grid">
-        <!-- Javascript renders products here -->
+        <!-- Rendered via JS -->
       </div>
     </div>
   </section>
@@ -151,8 +201,52 @@
       <div class="promo-content">
         <span class="tagline">Descuento de Temporada</span>
         <h2 class="promo-title">Hasta 30% OFF en Ropa de Abrigo</h2>
-        <p class="promo-subtitle">Aprovecha nuestras ofertas por tiempo limitado en abrigos de lana y chaquetas de cuero.</p>
+        <p class="promo-subtitle">Aprovecha nuestras ofertas por tiempo limitado en abrigos de lana y chaquetas de cuero con el código <strong>AURA2026</strong>.</p>
         <a href="#catalog" class="btn-primary">Ver Colección de Invierno</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials-section" id="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">Opiniones Reales</span>
+        <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+      </div>
+
+      <div class="testimonials-grid" id="testimonials-grid">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">Resolvemos tus dudas</span>
+        <h2 class="section-title">Preguntas Frecuentes</h2>
+      </div>
+
+      <div class="faq-accordion" id="faq-accordion">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-card">
+        <div class="newsletter-content">
+          <h3>Únete al Club AURA Atelier</h3>
+          <p>Recibe antes que nadie acceso exclusivo a colecciones cápsula y un <strong>15% OFF</strong> en tu primera compra.</p>
+        </div>
+        <form class="newsletter-form" id="newsletter-form">
+          <input type="email" placeholder="Ingresa tu correo electrónico" required>
+          <button type="submit" class="btn-primary">Suscribirse</button>
+        </form>
       </div>
     </div>
   </section>
@@ -179,7 +273,7 @@
         <div class="footer-column">
           <h4>Soporte</h4>
           <ul class="footer-links">
-            <li><a href="#">Preguntas Frecuentes</a></li>
+            <li><a href="#faq">Preguntas Frecuentes</a></li>
             <li><a href="#">Guía de Tallas</a></li>
             <li><a href="#">Políticas de Envío</a></li>
             <li><a href="#">Términos y Condiciones</a></li>
@@ -198,7 +292,7 @@
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; 2026 AURA Atelier. Todos los derechos reservados. Creado con HTML, CSS y JavaScript.</p>
+        <p>&copy; 2026 AURA Atelier. Todos los derechos reservados. Diseñado con Vanilla HTML, CSS y JS Modular.</p>
       </div>
     </div>
   </footer>
@@ -208,37 +302,65 @@
   <aside class="cart-drawer" id="cart-drawer">
     <div class="cart-header">
       <h3><i class="fas fa-shopping-bag" style="color: var(--color-accent);"></i> Tu Carrito</h3>
-      <button class="close-btn" id="close-cart-btn"><i class="fas fa-times"></i></button>
+      <button class="close-btn" id="close-cart-btn" aria-label="Cerrar Carrito"><i class="fas fa-times"></i></button>
     </div>
+
+    <!-- Free Shipping Progress -->
+    <div class="shipping-progress-container" id="shipping-progress-container"></div>
 
     <div class="cart-items" id="cart-items">
       <!-- Dynamic cart items rendered via JS -->
     </div>
 
     <div class="cart-footer">
+      <!-- Promo Code Form -->
+      <form class="promo-form" id="promo-form">
+        <input type="text" id="promo-input" placeholder="Código (ej: AURA2026)">
+        <button type="submit" class="btn-secondary">Aplicar</button>
+      </form>
+
       <div class="cart-summary-line">
         <span>Subtotal</span>
         <span id="cart-subtotal">$0.00</span>
       </div>
+
+      <div class="cart-summary-line" id="cart-discount-line" style="display: none; color: var(--color-accent);">
+        <span>Descuento</span>
+        <span id="cart-discount-amount">-$0.00</span>
+      </div>
+
       <div class="cart-summary-line">
         <span>Envío</span>
-        <span style="color: var(--color-success); font-weight: 600;">GRATIS</span>
+        <span id="cart-shipping-amount" style="font-weight: 600;">$0.00</span>
       </div>
+
       <div class="cart-total-line">
         <span>Total</span>
         <span id="cart-total">$0.00</span>
       </div>
 
       <button class="checkout-btn" id="checkout-btn">
-        <i class="fas fa-lock"></i> Finalizar Compra
+        <i class="fas fa-lock"></i> Proceder al Pago
       </button>
+    </div>
+  </aside>
+
+  <!-- Wishlist Drawer -->
+  <div class="cart-overlay" id="wishlist-overlay"></div>
+  <aside class="cart-drawer" id="wishlist-drawer">
+    <div class="cart-header">
+      <h3><i class="fas fa-heart" style="color: #ef4444;"></i> Tus Favoritos</h3>
+      <button class="close-btn" id="close-wishlist-btn" aria-label="Cerrar Favoritos"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="wishlist-items">
+      <!-- Dynamic wishlist items rendered via JS -->
     </div>
   </aside>
 
   <!-- Quick View Modal -->
   <div class="modal-overlay" id="quickview-modal">
     <div class="modal-content">
-      <button class="modal-close-btn" id="modal-close-btn"><i class="fas fa-times"></i></button>
+      <button class="modal-close-btn" id="modal-close-btn" aria-label="Cerrar modal"><i class="fas fa-times"></i></button>
       <div class="modal-img-container">
         <img id="modal-img" src="" alt="Vista previa">
       </div>
@@ -247,15 +369,17 @@
         <h2 class="product-title" id="modal-title">Nombre del Producto</h2>
         <div class="product-price" id="modal-price">$0.00</div>
         <p class="modal-description" id="modal-desc">Descripción...</p>
+
+        <!-- Color Selector -->
+        <div class="selector-group">
+          <label>Color:</label>
+          <div class="color-options" id="modal-colors-container"></div>
+        </div>
         
-        <div class="size-selector">
+        <!-- Size Selector -->
+        <div class="selector-group">
           <label>Seleccionar Talla:</label>
-          <div class="size-options">
-            <button class="size-btn" data-size="S">S</button>
-            <button class="size-btn selected" data-size="M">M</button>
-            <button class="size-btn" data-size="L">L</button>
-            <button class="size-btn" data-size="XL">XL</button>
-          </div>
+          <div class="size-options" id="modal-sizes-container"></div>
         </div>
 
         <button class="btn-primary" id="modal-add-cart" style="width: 100%; justify-content: center; margin-top: auto;">
@@ -265,10 +389,106 @@
     </div>
   </div>
 
+  <!-- Multi-Step Checkout Modal -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="modal-content checkout-modal-content">
+      <button class="modal-close-btn" id="close-checkout-btn" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+
+      <!-- Step Indicators -->
+      <div class="checkout-steps-bar">
+        <div class="step-dot active" id="step-indicator-1">1. Envío</div>
+        <div class="step-line"></div>
+        <div class="step-dot" id="step-indicator-2">2. Pago</div>
+        <div class="step-line"></div>
+        <div class="step-dot" id="step-indicator-3">3. Confirmación</div>
+      </div>
+
+      <form id="checkout-form" style="width: 100%;">
+        <!-- Step 1: Shipping Details -->
+        <div id="checkout-step-1" class="checkout-step">
+          <h3>Información de Envío</h3>
+          <div class="form-group">
+            <label for="checkout-name">Nombre Completo</label>
+            <input type="text" id="checkout-name" placeholder="Ej. Carlos Mendoza" required>
+          </div>
+          <div class="form-group">
+            <label for="checkout-email">Correo Electrónico</label>
+            <input type="email" id="checkout-email" placeholder="carlos@ejemplo.com" required>
+          </div>
+          <div class="form-group">
+            <label for="checkout-address">Dirección de Entrega</label>
+            <input type="text" id="checkout-address" placeholder="Calle 123 #45-67" required>
+          </div>
+        </div>
+
+        <!-- Step 2: Payment Details -->
+        <div id="checkout-step-2" class="checkout-step" style="display: none;">
+          <h3>Método de Pago</h3>
+          <div class="payment-methods">
+            <label class="payment-option">
+              <input type="radio" name="payment" value="card" checked>
+              <span><i class="far fa-credit-card"></i> Tarjeta de Crédito / Débito</span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="payment" value="paypal">
+              <span><i class="fab fa-paypal"></i> PayPal</span>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label>Número de Tarjeta</label>
+            <input type="text" placeholder="4532 •••• •••• 8901">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Expiración</label>
+              <input type="text" placeholder="MM/AA">
+            </div>
+            <div class="form-group">
+              <label>CVC</label>
+              <input type="text" placeholder="123">
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Order Success Confirmation -->
+        <div id="checkout-step-3" class="checkout-step text-center" style="display: none;">
+          <div class="success-icon"><i class="fas fa-circle-check"></i></div>
+          <h3>¡Pedido Confirmado!</h3>
+          <p>Tu orden <strong id="order-number">#AURA-98412</strong> ha sido procesada con éxito.</p>
+          <p class="text-sm">Enviaremos un correo de seguimiento con el código de rastreo de tu envío express.</p>
+        </div>
+
+        <!-- Order Summary Preview -->
+        <div class="checkout-summary-box">
+          <div id="checkout-summary-items"></div>
+          <div class="summary-total-row">
+            <span>Total a pagar:</span>
+            <strong id="checkout-summary-total">$0.00</strong>
+          </div>
+        </div>
+
+        <div class="checkout-actions">
+          <button type="button" class="btn-secondary" id="checkout-back-btn" style="display: none;">Atrás</button>
+          <button type="submit" class="btn-primary" id="checkout-next-btn">Continuar al Pago <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toast-container"></div>
 
-  <!-- Application Script -->
-  <script src="script.js"></script>
+  <!-- Floating Back to Top Button -->
+  <button id="back-to-top-btn" class="back-to-top-btn" aria-label="Volver arriba">
+    <svg class="progress-svg" width="48" height="48" viewBox="0 0 48 48">
+      <circle class="progress-bg" cx="24" cy="24" r="20"></circle>
+      <circle class="progress-bar" id="scroll-progress-circle" cx="24" cy="24" r="20"></circle>
+    </svg>
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- Application Script (ES Module) -->
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>
