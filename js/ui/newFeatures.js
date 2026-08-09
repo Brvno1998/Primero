@@ -34,7 +34,7 @@ function initCurrencySelector() {
   });
 }
 
-// 2. Voice Search Assistant
+// 2. Voice Search Assistant with Live Interim Speech-to-Text & Sound Effect
 function initVoiceSearch() {
   const voiceBtn = document.getElementById('voice-search-btn');
   const searchInput = document.getElementById('search-input');
@@ -43,45 +43,87 @@ function initVoiceSearch() {
 
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
+  let recognition = null;
+  let isListening = false;
+
+  const playChimeSound = () => {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.15, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.2);
+    } catch (e) {}
+  };
+
   voiceBtn.addEventListener('click', () => {
+    playChimeSound();
+
+    if (isListening && recognition) {
+      recognition.stop();
+      return;
+    }
+
     if (SpeechRecognition) {
       try {
-        const recognition = new SpeechRecognition();
+        recognition = new SpeechRecognition();
         recognition.lang = 'es-ES';
-        recognition.interimResults = false;
+        recognition.interimResults = true; // LIVE REAL-TIME WORDS AS YOU SPEAK
+        recognition.maxAlternatives = 1;
 
         voiceBtn.style.color = '#ef4444';
         voiceBtn.style.transform = 'scale(1.3)';
-        showToast('Escuchando... Di el producto que buscas', 'info');
+        voiceBtn.style.filter = 'drop-shadow(0 0 8px #ef4444)';
+        searchInput.placeholder = '🎙️ Escuchando... habla ahora...';
+        isListening = true;
+
+        showToast('🎙️ Escuchando... di lo que buscas en voz alta', 'info');
 
         recognition.start();
 
         recognition.onresult = (event) => {
-          const transcript = event.results[0][0].transcript;
+          let transcript = '';
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            transcript += event.results[i][0].transcript;
+          }
+
+          // INSTANTLY UPDATE SEARCH FIELD LIVE AS YOU SPEAK
           searchInput.value = transcript;
           searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-          showToast(`Buscando: "${transcript}"`, 'success');
-          voiceBtn.style.color = 'var(--color-accent)';
-          voiceBtn.style.transform = 'scale(1)';
         };
 
         recognition.onerror = () => {
-          fallbackVoicePrompt(searchInput);
-          voiceBtn.style.color = 'var(--color-accent)';
-          voiceBtn.style.transform = 'scale(1)';
+          resetVoiceBtn();
         };
 
         recognition.onend = () => {
-          voiceBtn.style.color = 'var(--color-accent)';
-          voiceBtn.style.transform = 'scale(1)';
+          resetVoiceBtn();
         };
       } catch (e) {
+        resetVoiceBtn();
         fallbackVoicePrompt(searchInput);
       }
     } else {
       fallbackVoicePrompt(searchInput);
     }
   });
+
+  function resetVoiceBtn() {
+    isListening = false;
+    voiceBtn.style.color = 'var(--color-accent)';
+    voiceBtn.style.transform = 'scale(1)';
+    voiceBtn.style.filter = 'none';
+    searchInput.placeholder = 'Buscar prenda o hablar...';
+  }
 }
 
 function fallbackVoicePrompt(searchInput) {
