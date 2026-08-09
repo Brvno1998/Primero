@@ -1253,30 +1253,50 @@ img {
 }
 
 .color-swatch {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: var(--radius-full);
-  border: 2px solid transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
+  transition: all 0.25s ease-in-out;
+  position: relative;
+}
+
+.color-swatch:hover {
+  transform: scale(1.1);
+  border-color: var(--color-accent);
 }
 
 .color-swatch.selected {
   border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-bg-card), 0 0 0 5px var(--color-accent);
+  transform: scale(1.15);
 }
 
 .size-btn {
   background-color: var(--color-bg-secondary);
   border: 1px solid var(--color-border);
   color: var(--color-text-main);
-  padding: 0.4rem 0.8rem;
-  border-radius: var(--radius-sm);
+  padding: 0.5rem 1rem;
+  min-width: 44px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.25s ease-in-out;
+}
+
+.size-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .size-btn.selected {
   background-color: var(--color-accent);
   color: #000;
+  font-weight: 700;
   border-color: var(--color-accent);
+  transform: scale(1.08);
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
 }
 
 .checkout-modal-content {
