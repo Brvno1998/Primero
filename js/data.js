@@ -17,7 +17,7 @@ export const PRODUCTS = [
     sizes: ['S', 'M', 'L', 'XL'],
     image: 'assets/images/jacket.jpg',
     gallery: ['assets/images/jacket.jpg'],
-    description: 'Chaqueta de cuero vacuno de corte perfecto con acabados metálicos mate y forro interior térmico transpirable. Estilo rebelde y sofisticado.'
+    description: 'Chaqueta de cuero vacuno de corte masculino perfecto con acabados metálicos mate y forro interior térmico transpirable.'
   },
   {
     id: 'prod-2',
@@ -49,7 +49,7 @@ export const PRODUCTS = [
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     image: 'assets/images/hoodie.jpg',
     gallery: ['assets/images/hoodie.jpg'],
-    description: 'Algodón orgánico pesado de 450 GSM. Hombros caídos y silueta relajada con bolsa canguro y bordado tonal de la marca en el pecho.'
+    description: 'Sudadera masculina de algodón orgánico pesado de 450 GSM. Hombros caídos y silueta relajada con bolsa canguro.'
   },
   {
     id: 'prod-4',
@@ -162,6 +162,38 @@ export const PRODUCTS = [
     image: 'assets/images/men_bomber.jpg',
     gallery: ['assets/images/men_bomber.jpg'],
     description: 'Chaqueta estilo bomber en cuero de ante suave tono camel. Puños y cuello elásticos acanalados con doble cremallera metálica de latón.'
+  },
+  {
+    id: 'prod-11',
+    name: 'Chaqueta Biker Cuero Femme',
+    category: 'mujeres',
+    tag: 'Tendencia',
+    price: 195.00,
+    originalPrice: 230.00,
+    rating: 4.9,
+    reviews: 35,
+    stock: 8,
+    colors: ['#121212', '#4e342e'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    image: 'assets/images/women_jacket.jpg',
+    gallery: ['assets/images/women_jacket.jpg'],
+    description: 'Chaqueta estilo biker entallada para mujer en piel de becerro negra con solapas cruzadas y herrajes plateados cromados.'
+  },
+  {
+    id: 'prod-12',
+    name: 'Hoodie Oversized Femme Velvet',
+    category: 'mujeres',
+    tag: 'Nuevo',
+    price: 89.00,
+    originalPrice: null,
+    rating: 4.8,
+    reviews: 22,
+    stock: 11,
+    colors: ['#212121', '#8d6e63'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    image: 'assets/images/women_hoodie.jpg',
+    gallery: ['assets/images/women_hoodie.jpg'],
+    description: 'Sudadera para mujer de corte relaxed oversized en algodón felpado de tacto aterciopelado. Capucha amplia y bolsillo tipo canguro.'
   }
 ];
 
