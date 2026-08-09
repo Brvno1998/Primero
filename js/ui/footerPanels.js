@@ -615,9 +615,11 @@ export function initFooterPanels() {
   }
 
   function triggerCategory(categoryName) {
-    const tabBtn = document.querySelector(`.tab-btn[data-category="${categoryName}"]`);
-    if (tabBtn) {
-      tabBtn.click();
+    if (typeof window.filterCategory === 'function') {
+      window.filterCategory(categoryName);
+    } else {
+      const tabBtn = document.querySelector(`.tab-btn[data-category="${categoryName}"]`);
+      if (tabBtn) tabBtn.click();
     }
   }
 }

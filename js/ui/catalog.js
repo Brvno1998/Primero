@@ -12,6 +12,30 @@ let searchQuery = '';
 let sortBy = 'popular';
 let maxPrice = 500;
 
+export function filterCategory(categoryName) {
+  activeCategory = categoryName || 'all';
+
+  const categoryTabsContainer = document.querySelector('.category-tabs');
+  if (categoryTabsContainer) {
+    const tabs = categoryTabsContainer.querySelectorAll('.tab-btn');
+    tabs.forEach(t => {
+      if (t.dataset.category === activeCategory) t.classList.add('active');
+      else t.classList.remove('active');
+    });
+  }
+
+  const catalogSection = document.getElementById('catalog');
+  if (catalogSection) {
+    catalogSection.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  renderProducts();
+}
+
+if (typeof window !== 'undefined') {
+  window.filterCategory = filterCategory;
+}
+
 export function initCatalog() {
   const productsGrid = document.getElementById('products-grid');
   const categoryTabs = document.querySelectorAll('.tab-btn');

@@ -3,6 +3,7 @@
 // ==========================================================================
 
 import { FAQS, TESTIMONIALS } from '../data.js';
+import { filterCategory } from './catalog.js';
 import { showToast } from './toast.js';
 
 export function initNavigation() {
@@ -21,22 +22,23 @@ export function initNavigation() {
         icon.className = navMenu.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
       }
     });
+  }
 
-    // Close menu when link is clicked & trigger category if specified
-    navMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
+  // Navbar link clicks & category filtering
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      if (navMenu) navMenu.classList.remove('active');
+      if (mobileToggle) {
         const icon = mobileToggle.querySelector('i');
         if (icon) icon.className = 'fas fa-bars';
+      }
 
-        if (link.dataset.category) {
-          const cat = link.dataset.category;
-          const tabBtn = document.querySelector(`.category-tabs .tab-btn[data-category="${cat}"]`);
-          if (tabBtn) tabBtn.click();
-        }
-      });
+      if (link.dataset.category) {
+        e.preventDefault();
+        filterCategory(link.dataset.category);
+      }
     });
-  }
+  });
 
   // Scroll Progress & Back to Top
   window.addEventListener('scroll', () => {
