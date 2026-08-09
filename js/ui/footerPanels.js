@@ -30,6 +30,44 @@ export function initFooterPanels() {
     });
   });
 
+  // On-page Size Calculator logic
+  const pageCalcBtn = document.getElementById('page-calc-btn');
+  const pageResultDiv = document.getElementById('page-calc-result');
+  if (pageCalcBtn && pageResultDiv) {
+    pageCalcBtn.addEventListener('click', () => {
+      const chest = parseFloat(document.getElementById('page-calc-chest').value);
+      if (!chest || isNaN(chest)) {
+        showToast('Ingresa la medida de tu pecho en centímetros', 'info');
+        return;
+      }
+      let size = 'M';
+      if (chest < 94) size = 'S';
+      else if (chest <= 102) size = 'M';
+      else if (chest <= 110) size = 'L';
+      else size = 'XL';
+
+      pageResultDiv.style.display = 'block';
+      pageResultDiv.innerHTML = `<i class="fas fa-check-circle" style="color: var(--color-accent);"></i> Talla recomendada: <strong>${size}</strong>`;
+    });
+  }
+
+  // On-page Order Tracking logic
+  const pageTrackForm = document.getElementById('page-track-form');
+  if (pageTrackForm) {
+    pageTrackForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      showToast('Actualizando estado del pedido...', 'info');
+      openOrderTrackingPanel();
+    });
+  }
+
+  const pageReturnsBtn = document.getElementById('page-returns-btn');
+  if (pageReturnsBtn) {
+    pageReturnsBtn.addEventListener('click', () => {
+      openReturnsPanel();
+    });
+  }
+
   // Intercept all links inside footer
   const footerLinks = document.querySelectorAll('.footer-links a');
 
