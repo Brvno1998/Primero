@@ -270,6 +270,60 @@ export function initCatalog() {
   renderProducts();
 }
 
+function evaluateSearchMatch(prod, query) {
+  if (!query) return true;
+
+  // Clean and normalize query (remove accents, punctuation)
+  const normQuery = query.toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, "")
+    .trim();
+
+  if (!normQuery) return true;
+
+  const normName = (prod.name || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const normDesc = (prod.description || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const normCat = (prod.category || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const normTag = (prod.tag || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+  // 1. Direct Substring Match
+  if (normName.includes(normQuery) || normDesc.includes(normQuery) || normCat.includes(normQuery) || normTag.includes(normQuery)) {
+    return true;
+  }
+
+  // 2. Gender / Category Keyword Intent Recognition
+  const menSynonyms = ['hombre', 'hombres', 'caballero', 'caballeros', 'masculino', 'chico', 'chicos', 'varon', 'varones', 'man', 'men'];
+  const womenSynonyms = ['mujer', 'mujeres', 'dama', 'damas', 'femenino', 'chica', 'chicas', 'woman', 'women'];
+  const accSynonyms = ['accesorio', 'accesorios', 'reloj', 'relojes', 'gafas', 'lentes', 'cinturon', 'cinturones', 'anillo', 'anillos', 'gorra', 'gorras', 'bolso', 'bolsos'];
+
+  const words = normQuery.split(/\s+/);
+  const hasMenIntent = words.some(w => menSynonyms.includes(w));
+  const hasWomenIntent = words.some(w => womenSynonyms.includes(w));
+  const hasAccIntent = words.some(w => accSynonyms.includes(w));
+
+  if (hasMenIntent && normCat === 'hombres') return true;
+  if (hasWomenIntent && normCat === 'mujeres') return true;
+  if (hasAccIntent && normCat === 'accesorios') return true;
+
+  // 3. Token-level matching (excluding stop words)
+  const stopWords = new Set(['ropa', 'para', 'de', 'del', 'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'por', 'con', 'en', 'y', 'o', 'que']);
+  const sigTokens = words.filter(w => !stopWords.has(w) && w.length > 1);
+
+  if (sigTokens.length > 0) {
+    return sigTokens.every(token => 
+      normName.includes(token) || 
+      normDesc.includes(token) || 
+      normCat.includes(token) || 
+      normTag.includes(token) ||
+      (menSynonyms.includes(token) && normCat === 'hombres') ||
+      (womenSynonyms.includes(token) && normCat === 'mujeres') ||
+      (accSynonyms.includes(token) && normCat === 'accesorios')
+    );
+  }
+
+  return false;
+}
+
 export function renderProducts() {
   const productsGrid = document.getElementById('products-grid');
   if (!productsGrid) return;
@@ -279,8 +333,7 @@ export function renderProducts() {
     const matchesCategory = activeCategory === 'all' || activeCategory === 'todos' || activeCategory === 'coleccion' || 
       (activeCategory === 'ofertas' ? prod.originalPrice !== null : prod.category === activeCategory);
 
-    const matchesSearch = prod.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      prod.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = evaluateSearchMatch(prod, searchQuery);
 
     const matchesPrice = prod.price <= maxPrice;
 
