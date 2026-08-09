@@ -1,5 +1,5 @@
 // ==========================================================================
-// AURA ATELIER - PRODUCT CATALOG DATABASE
+// AURA ATELIER - PRODUCT CATALOG DATABASE (600+ ITEMS)
 // ==========================================================================
 
 const BASE_PRODUCTS = [
@@ -197,6 +197,97 @@ const BASE_PRODUCTS = [
   }
 ];
 
+// Generator for 250 Men's Clothing Products
+function generate250MenProducts() {
+  const menTypes = [
+    { name: 'Chaqueta Biker Cuero Nocturna', image: 'assets/images/jacket.jpg', tag: 'Popular', price: 189.99, desc: 'Chaqueta de cuero vacuno masculino con forro térmico transpirable.' },
+    { name: 'Hoodie Heavyweight Oversized', image: 'assets/images/hoodie.jpg', tag: 'Streetwear', price: 85.50, desc: 'Sudadera masculina de algodón orgánico de 450 GSM de caída relajada.' },
+    { name: 'Traje Ejecutivo Merino Slim Fit', image: 'assets/images/men_suit.jpg', tag: 'Alta Costura', price: 340.00, desc: 'Traje de 2 piezas en mezcla de lana merino azul marengo con solapa de muesca.' },
+    { name: 'Camisa Lino Italiano Pure', image: 'assets/images/men_shirt.jpg', tag: 'Verano Luxe', price: 110.00, desc: 'Camisa masculina 100% lino orgánico italiano con cuello mao y botones de nácar.' },
+    { name: 'Pantalón Tailored Pleated Gabardina', image: 'assets/images/men_trousers.jpg', tag: 'Tendencia', price: 135.00, desc: 'Pantalón masculino de tiro alto con doble pinza en gabardina beige de lana.' },
+    { name: 'Chaqueta Bomber Suede Camel', image: 'assets/images/men_bomber.jpg', tag: 'Edición Limitada', price: 245.00, desc: 'Chaqueta bomber masculina en ante de cuero tono camel con puños acanalados.' }
+  ];
+
+  const items = [];
+  const colorPalettes = [
+    ['#121212', '#3e2723'],
+    ['#1c2833', '#424242'],
+    ['#ffffff', '#78909c'],
+    ['#263238', '#c67d0a'],
+    ['#d7ccc8', '#111111']
+  ];
+
+  for (let i = 1; i <= 250; i++) {
+    const base = menTypes[(i - 1) % menTypes.length];
+    const numStr = i < 10 ? `00${i}` : (i < 100 ? `0${i}` : `${i}`);
+    const isDiscount = i % 4 === 0;
+    const origPrice = isDiscount ? Math.round(base.price * 1.2) : null;
+
+    items.push({
+      id: `men-item-${i}`,
+      name: `${base.name} N°${numStr}`,
+      category: 'hombres',
+      tag: base.tag,
+      price: base.price + (i % 9) * 4,
+      originalPrice: origPrice,
+      rating: parseFloat((4.6 + (i % 5) * 0.1).toFixed(1)),
+      reviews: 15 + (i * 2),
+      stock: 4 + (i % 12),
+      colors: colorPalettes[i % colorPalettes.length],
+      sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+      image: base.image,
+      gallery: [base.image],
+      description: `${base.description} Edición masculina de lujo AURA Atelier #${numStr}.`
+    });
+  }
+
+  return items;
+}
+
+// Generator for 250 Women's Clothing Products
+function generate250WomenProducts() {
+  const womenTypes = [
+    { name: 'Vestido de Seda Satinado Drapeado', image: 'assets/images/dress.jpg', tag: 'Exclusivo', price: 220.00, desc: 'Vestido confeccionado en seda 100% natural satinada con caída fluida.' },
+    { name: 'Abrigo Clásico de Lana Melange', image: 'assets/images/coat.jpg', tag: 'Invierno', price: 260.00, desc: 'Abrigo femenino de corte recto en lana melange con cinturón ajustable.' },
+    { name: 'Chaqueta Biker Cuero Femme', image: 'assets/images/women_jacket.jpg', tag: 'Tendencia', price: 195.00, desc: 'Chaqueta biker entallada para mujer en piel negra con solapas cruzadas.' },
+    { name: 'Hoodie Velvet Oversized Femme', image: 'assets/images/women_hoodie.jpg', tag: 'Nuevo', price: 89.00, desc: 'Sudadera femenina oversized en algodón felpado de tacto aterciopelado.' }
+  ];
+
+  const items = [];
+  const colorPalettes = [
+    ['#e0d8cf', '#121212'],
+    ['#4e342e', '#9e9e9e'],
+    ['#8d6e63', '#ffffff'],
+    ['#212121', '#d4af37']
+  ];
+
+  for (let i = 1; i <= 250; i++) {
+    const base = womenTypes[(i - 1) % womenTypes.length];
+    const numStr = i < 10 ? `00${i}` : (i < 100 ? `0${i}` : `${i}`);
+    const isDiscount = i % 4 === 0;
+    const origPrice = isDiscount ? Math.round(base.price * 1.22) : null;
+
+    items.push({
+      id: `women-item-${i}`,
+      name: `${base.name} N°${numStr}`,
+      category: 'mujeres',
+      tag: base.tag,
+      price: base.price + (i % 8) * 5,
+      originalPrice: origPrice,
+      rating: parseFloat((4.7 + (i % 4) * 0.1).toFixed(1)),
+      reviews: 18 + (i * 2),
+      stock: 3 + (i % 10),
+      colors: colorPalettes[i % colorPalettes.length],
+      sizes: ['XS', 'S', 'M', 'L', 'XL'],
+      image: base.image,
+      gallery: [base.image],
+      description: `${base.description} Colección femenina de alta costura AURA #${numStr}.`
+    });
+  }
+
+  return items;
+}
+
 // Generator for 100 Luxury Accessory Products
 function generate100Accessories() {
   const accessoryTypes = [
@@ -245,7 +336,12 @@ function generate100Accessories() {
   return accessoryItems;
 }
 
-export const PRODUCTS = [...BASE_PRODUCTS, ...generate100Accessories()];
+export const PRODUCTS = [
+  ...BASE_PRODUCTS,
+  ...generate250MenProducts(),
+  ...generate250WomenProducts(),
+  ...generate100Accessories()
+];
 
 export const TESTIMONIALS = [
   {
