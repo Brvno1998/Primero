@@ -1,5 +1,5 @@
 // ==========================================================================
-// AURA ATELIER - CATALOG & PRODUCT GRID UI (COMPLETE 600+ ITEMS SHOWCASE)
+// AURA ATELIER - CATALOG & PRODUCT GRID UI (INTERACTIVE COLOR & SIZE EFFECTS FOR ALL CARDS)
 // ==========================================================================
 
 import { PRODUCTS } from '../data.js';
@@ -12,6 +12,47 @@ let searchQuery = '';
 let sortBy = 'popular';
 let maxPrice = 500;
 let displayLimit = 24;
+
+const SIZE_CARD_SCALES = {
+  'XS': 0.88,
+  'S': 0.94,
+  'M': 1.0,
+  'L': 1.08,
+  'XL': 1.16,
+  'XXL': 1.24
+};
+
+function applyCardEffects(cardEl, colorHex, sizeStr) {
+  const img = cardEl.querySelector('.product-thumb img');
+  if (!img) return;
+
+  if (sizeStr) {
+    const scaleVal = SIZE_CARD_SCALES[sizeStr] || 1.0;
+    img.style.transform = `scale(${scaleVal})`;
+  }
+
+  if (colorHex) {
+    if (colorHex === '#121212' || colorHex === '#1a1a1a') {
+      img.style.filter = 'contrast(1.08) brightness(0.95)';
+    } else if (colorHex === '#4a3728' || colorHex === '#5c4033') {
+      img.style.filter = 'sepia(0.8) hue-rotate(-25deg) saturate(1.8) contrast(1.1)';
+    } else if (colorHex === '#808080' || colorHex === '#2b2b2b' || colorHex === '#c0c0c0') {
+      img.style.filter = 'grayscale(0.9) contrast(1.2) brightness(1.1)';
+    } else if (colorHex === '#ffffff') {
+      img.style.filter = 'brightness(1.4) contrast(0.85) grayscale(0.4)';
+    } else if (colorHex === '#1e3a8a' || colorHex === '#708090') {
+      img.style.filter = 'hue-rotate(185deg) saturate(2.2) brightness(0.95)';
+    } else if (colorHex === '#8b0000') {
+      img.style.filter = 'hue-rotate(330deg) saturate(2.8) contrast(1.15)';
+    } else if (colorHex === '#d4af37') {
+      img.style.filter = 'sepia(0.95) hue-rotate(10deg) saturate(3) brightness(1.1)';
+    } else if (colorHex === '#355e3b') {
+      img.style.filter = 'hue-rotate(90deg) saturate(2) brightness(0.9)';
+    } else {
+      img.style.filter = 'brightness(0.9)';
+    }
+  }
+}
 
 export function filterCategory(categoryName) {
   const normCat = (categoryName === 'todos' || categoryName === 'coleccion') ? 'all' : (categoryName || 'all');
@@ -103,6 +144,44 @@ export function initCatalog() {
     productsGrid.addEventListener('click', (e) => {
       const target = e.target;
 
+      // Card Color button click
+      const cardColorBtn = target.closest('.card-color-dot-btn');
+      if (cardColorBtn) {
+        const card = cardColorBtn.closest('.product-card');
+        if (card) {
+          card.querySelectorAll('.card-color-dot-btn').forEach(b => {
+            b.style.transform = 'scale(1)';
+            b.style.borderColor = 'rgba(255,255,255,0.3)';
+            b.style.boxShadow = 'none';
+          });
+          cardColorBtn.style.transform = 'scale(1.35)';
+          cardColorBtn.style.borderColor = 'var(--color-accent)';
+          cardColorBtn.style.boxShadow = '0 0 8px var(--color-accent)';
+          applyCardEffects(card, cardColorBtn.dataset.color, null);
+        }
+        return;
+      }
+
+      // Card Size pill click
+      const cardSizePill = target.closest('.card-size-pill-btn');
+      if (cardSizePill) {
+        const card = cardSizePill.closest('.product-card');
+        if (card) {
+          card.querySelectorAll('.card-size-pill-btn').forEach(b => {
+            b.style.background = 'var(--color-bg-secondary)';
+            b.style.color = 'var(--color-text-main)';
+            b.style.borderColor = 'var(--color-border)';
+            b.style.fontWeight = 'normal';
+          });
+          cardSizePill.style.background = 'var(--color-accent)';
+          cardSizePill.style.color = '#000';
+          cardSizePill.style.borderColor = 'var(--color-accent)';
+          cardSizePill.style.fontWeight = 'bold';
+          applyCardEffects(card, null, cardSizePill.dataset.size);
+        }
+        return;
+      }
+
       // Load More catalog button
       const loadMoreBtn = target.closest('#load-more-catalog-btn');
       if (loadMoreBtn) {
@@ -124,8 +203,17 @@ export function initCatalog() {
       if (addCartBtn) {
         const prodId = addCartBtn.dataset.id;
         const prod = PRODUCTS.find(p => p.id === prodId);
-        if (store.addToCart(prodId)) {
-          showToast(`¡${prod ? prod.name : 'Producto'} agregado al carrito!`, 'success');
+        
+        // Find selected size and color on this card if selected
+        const card = addCartBtn.closest('.product-card');
+        const activeSizePill = card ? card.querySelector('.card-size-pill-btn[style*="background: var(--color-accent)"], .card-size-pill-btn.active') : null;
+        const activeColorBtn = card ? card.querySelector('.card-color-dot-btn[style*="border-color: var(--color-accent)"], .card-color-dot-btn.active') : null;
+
+        const size = activeSizePill ? activeSizePill.dataset.size : (prod.sizes ? prod.sizes[0] : 'M');
+        const color = activeColorBtn ? activeColorBtn.dataset.color : (prod.colors ? prod.colors[0] : '#121212');
+
+        if (store.addToCart(prodId, size, color)) {
+          showToast(`¡${prod ? prod.name : 'Producto'} (Talla: ${size}) agregado al carrito!`, 'success');
         }
         return;
       }
@@ -229,6 +317,9 @@ export function renderProducts() {
       ? Math.round(((prod.originalPrice - prod.price) / prod.originalPrice) * 100) 
       : null;
 
+    const colors = prod.colors || ['#121212', '#4a3728', '#808080'];
+    const sizes = prod.sizes || ['XS', 'S', 'M', 'L', 'XL'];
+
     return `
       <article class="product-card" data-id="${prod.id}">
         <div class="product-thumb">
@@ -267,6 +358,22 @@ export function renderProducts() {
           <div class="product-rating">
             ${generateStars(prod.rating)}
             <span class="rating-count">(${prod.reviews})</span>
+          </div>
+
+          <!-- Color Swatches Selector on Card -->
+          <div class="card-color-swatches" style="display: flex; gap: 6px; margin: 8px 0; align-items: center; flex-wrap: wrap;">
+            <small style="font-size: 0.7rem; color: var(--color-text-muted); font-weight: 600;">Color:</small>
+            ${colors.map((hex, index) => `
+              <button class="card-color-dot-btn ${index === 0 ? 'active' : ''}" data-color="${hex}" style="background-color: ${hex}; width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid ${index === 0 ? 'var(--color-accent)' : 'rgba(255,255,255,0.3)'}; cursor: pointer; transition: all 0.25s ease;" title="Cambiar color a ${hex}"></button>
+            `).join('')}
+          </div>
+
+          <!-- Size Selector Pills on Card -->
+          <div class="card-size-selector" style="display: flex; gap: 4px; margin-bottom: 10px; align-items: center; flex-wrap: wrap;">
+            <small style="font-size: 0.7rem; color: var(--color-text-muted); font-weight: 600;">Talla:</small>
+            ${sizes.map((sz) => `
+              <button class="card-size-pill-btn ${sz === 'M' ? 'active' : ''}" data-size="${sz}" style="padding: 2px 7px; font-size: 0.7rem; border-radius: 4px; border: 1px solid ${sz === 'M' ? 'var(--color-accent)' : 'var(--color-border)'}; background: ${sz === 'M' ? 'var(--color-accent)' : 'var(--color-bg-secondary)'}; color: ${sz === 'M' ? '#000' : 'var(--color-text-main)'}; font-weight: ${sz === 'M' ? 'bold' : 'normal'}; cursor: pointer; transition: all 0.25s ease;" title="Probar escala talla ${sz}">${sz}</button>
+            `).join('')}
           </div>
 
           <div class="product-bottom">
