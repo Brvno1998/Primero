@@ -14,6 +14,22 @@ export function initFooterPanels() {
 
   if (!modal || !bodyEl) return;
 
+  // Intercept feature cards in footer showcase
+  const featureCards = document.querySelectorAll('.footer-feature-card');
+  featureCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const panel = card.dataset.panel;
+      if (panel === 'size-guide') openSizeGuidePanel();
+      else if (panel === 'shipping') openShippingPanel();
+      else if (panel === 'returns') openReturnsPanel();
+      else if (panel === 'tracking') openOrderTrackingPanel();
+      else if (panel === 'sustainability') openSustainabilityPanel();
+      else if (panel === 'care') openCarePanel();
+      else if (panel === 'vip') openVipPanel();
+      else if (panel === 'community') openCommunityPanel();
+    });
+  });
+
   // Intercept all links inside footer
   const footerLinks = document.querySelectorAll('.footer-links a');
 
