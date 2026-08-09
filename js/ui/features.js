@@ -59,11 +59,44 @@ function initAiStylist() {
 
   let currentOccasion = 'cita';
   let currentGender = 'todos';
-  let currentDisplayLimit = 20;
+  let slideIndex = 0;
+  let autoplayTimer = null;
+  let progressTimer = null;
+  let isPaused = false;
+  let progressPercent = 0;
+
+  function stopCarouselTimers() {
+    if (autoplayTimer) clearInterval(autoplayTimer);
+    if (progressTimer) clearInterval(progressTimer);
+    autoplayTimer = null;
+    progressTimer = null;
+  }
+
+  function startCarouselTimers(totalItems) {
+    stopCarouselTimers();
+    if (totalItems <= 1 || isPaused) return;
+
+    progressPercent = 0;
+    const progressFill = document.getElementById('carousel-progress-fill');
+    
+    progressTimer = setInterval(() => {
+      progressPercent += 2; // 100% in 50 * 100ms = 5000ms
+      if (progressFill) {
+        progressFill.style.width = `${Math.min(progressPercent, 100)}%`;
+      }
+    }, 100);
+
+    autoplayTimer = setInterval(() => {
+      slideIndex = (slideIndex + 1) % totalItems;
+      progressPercent = 0;
+      updateActiveSlide(totalItems);
+    }, 5000);
+  }
 
   fab.addEventListener('click', () => {
     overlay.classList.add('open');
     drawer.classList.add('open');
+    slideIndex = 0;
     renderStylistOutfits();
   });
 
@@ -71,6 +104,7 @@ function initAiStylist() {
     closeBtn.addEventListener('click', () => {
       overlay.classList.remove('open');
       drawer.classList.remove('open');
+      stopCarouselTimers();
     });
   }
 
@@ -78,6 +112,7 @@ function initAiStylist() {
     overlay.addEventListener('click', () => {
       overlay.classList.remove('open');
       drawer.classList.remove('open');
+      stopCarouselTimers();
     });
   }
 
@@ -88,7 +123,7 @@ function initAiStylist() {
       occasionBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       currentOccasion = btn.dataset.occasion;
-      currentDisplayLimit = 20;
+      slideIndex = 0;
       renderStylistOutfits();
     });
   });
@@ -100,7 +135,7 @@ function initAiStylist() {
       genderBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       currentGender = btn.dataset.gender;
-      currentDisplayLimit = 20;
+      slideIndex = 0;
       renderStylistOutfits();
     });
   });
@@ -128,35 +163,29 @@ function initAiStylist() {
         'Cita Romántica Glamour Velvet'
       ];
 
-      // 150 Men Romantic Date Combos
+      // Interleave 150 Men & 150 Women Romantic Date Combos for "Todos"
       for (let i = 0; i < 150; i++) {
-        const p1 = menProducts[i % menProducts.length];
-        const p2 = accProducts[i % accProducts.length];
         const numStr = i < 9 ? `00${i + 1}` : (i < 99 ? `0${i + 1}` : `${i + 1}`);
-        outfits.push({
-          id: `combo-men-cita-${i + 1}`,
-          title: `Look Cita Romántica ♂ N°${numStr} (${menTitles[i % menTitles.length]})`,
-          gender: 'hombres',
-          badgeText: '♂ Hombre',
-          items: [p1, p2]
-        });
-      }
 
-      // 150 Women Romantic Date Combos
-      for (let i = 0; i < 150; i++) {
-        const p1 = womenProducts[i % womenProducts.length];
-        const p2 = accProducts[(i + 4) % accProducts.length];
-        const numStr = i < 9 ? `00${i + 1}` : (i < 99 ? `0${i + 1}` : `${i + 1}`);
+        // Women combo
         outfits.push({
           id: `combo-women-cita-${i + 1}`,
           title: `Look Cita Romántica ♀ N°${numStr} (${womenTitles[i % womenTitles.length]})`,
           gender: 'mujeres',
           badgeText: '♀ Mujer',
-          items: [p1, p2]
+          items: [womenProducts[i % womenProducts.length], accProducts[(i + 4) % accProducts.length]]
+        });
+
+        // Men combo
+        outfits.push({
+          id: `combo-men-cita-${i + 1}`,
+          title: `Look Cita Romántica ♂ N°${numStr} (${menTitles[i % menTitles.length]})`,
+          gender: 'hombres',
+          badgeText: '♂ Hombre',
+          items: [menProducts[i % menProducts.length], accProducts[i % accProducts.length]]
         });
       }
     } else {
-      // 50 Combos for other occasions
       for (let i = 0; i < 50; i++) {
         const p1 = (i % 2 === 0) ? menProducts[i % menProducts.length] : womenProducts[i % womenProducts.length];
         const p2 = accProducts[i % accProducts.length];
@@ -174,6 +203,68 @@ function initAiStylist() {
     return outfits;
   }
 
+  let activeOutfitsList = [];
+
+  function updateActiveSlide(totalItems) {
+    const cardEl = document.getElementById('active-outfit-slide-card');
+    const numEl = document.getElementById('carousel-slide-num');
+
+    if (!cardEl || !activeOutfitsList.length) return;
+
+    if (numEl) numEl.textContent = `${slideIndex + 1}`;
+
+    const combo = activeOutfitsList[slideIndex % activeOutfitsList.length];
+    const totalComboPrice = combo.items.reduce((sum, item) => sum + item.price, 0);
+    const itemIdsJson = JSON.stringify(combo.items.map(item => item.id));
+
+    cardEl.innerHTML = `
+      <div class="stylist-outfit-box" style="padding: 18px; background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-md); animation: fadeIn 0.3s ease-in-out;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h5 style="font-size: 0.95rem; margin: 0; color: #ffffff;">${combo.title}</h5>
+          <span class="product-category" style="background: rgba(212,175,55,0.15); color: var(--color-accent); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">${combo.badgeText}</span>
+        </div>
+
+        <div class="outfit-items-flex" style="display: flex; flex-direction: column; gap: 10px;">
+          ${combo.items.map(item => `
+            <div class="outfit-item-card" style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 6px;">
+              <img src="${item.image}" alt="${item.name}" style="width: 55px; height: 65px; object-fit: cover; border-radius: 4px;">
+              <div style="flex: 1;">
+                <h6 style="margin: 0; font-size: 0.88rem; color: #ffffff;">${item.name}</h6>
+                <span class="outfit-price" style="font-size: 0.85rem; color: var(--color-accent);">$${item.price.toFixed(2)}</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="outfit-total-row" style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--color-border); display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.85rem; color: var(--color-text-muted);">Precio Outfit Completo:</span>
+          <strong style="color: var(--color-accent); font-size: 1.15rem;">$${totalComboPrice.toFixed(2)}</strong>
+        </div>
+
+        <button class="btn-primary buy-combo-btn" data-items='${itemIdsJson}' style="width: 100%; justify-content: center; margin-top: 14px; padding: 11px; font-size: 0.9rem;">
+          <i class="fas fa-shopping-bag"></i> Agregar Outfit Completo
+        </button>
+      </div>
+    `;
+
+    // Attach buy button listener
+    const buyBtn = cardEl.querySelector('.buy-combo-btn');
+    if (buyBtn) {
+      buyBtn.addEventListener('click', () => {
+        try {
+          const itemIds = JSON.parse(buyBtn.dataset.items);
+          itemIds.forEach(id => store.addToCart(id));
+          showToast('¡Outfit completo de Cita Romántica agregado al carrito!', 'success');
+          overlay.classList.remove('open');
+          drawer.classList.remove('open');
+          stopCarouselTimers();
+        } catch (e) {
+          console.error(e);
+        }
+      });
+    }
+  }
+
   function renderStylistOutfits() {
     let allOutfits = getOutfitsForOccasion(currentOccasion);
 
@@ -181,78 +272,72 @@ function initAiStylist() {
       allOutfits = allOutfits.filter(o => o.gender === currentGender);
     }
 
+    activeOutfitsList = allOutfits;
+
     if (headingEl) {
       const occasionText = currentOccasion === 'cita' ? 'Cita Romántica' : currentOccasion;
-      headingEl.textContent = `Outfits Recomendados en Combo (${allOutfits.length} Looks ${occasionText})`;
+      headingEl.textContent = `Carrusel de Outfits Cita Romántica (${allOutfits.length} Looks)`;
     }
 
-    const visibleOutfits = allOutfits.slice(0, currentDisplayLimit);
-
-    outfitContainer.innerHTML = visibleOutfits.map(combo => {
-      const totalComboPrice = combo.items.reduce((sum, item) => sum + item.price, 0);
-      const itemIdsJson = JSON.stringify(combo.items.map(item => item.id));
-
-      return `
-        <div class="stylist-outfit-box" style="margin-bottom: 20px; padding: 18px; background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <h5 style="font-size: 0.95rem; margin: 0; color: #ffffff;">${combo.title}</h5>
-            <span class="product-category" style="background: rgba(212,175,55,0.15); color: var(--color-accent); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">${combo.badgeText}</span>
+    outfitContainer.innerHTML = `
+      <div class="stylist-carousel-container" style="position: relative;">
+        <!-- Controls Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; background: rgba(255,255,255,0.03); padding: 8px 12px; border-radius: 6px;">
+          <span style="font-size: 0.8rem; color: var(--color-accent); font-weight: 600; display: flex; align-items: center; gap: 6px;">
+            <i class="fas fa-circle-play" style="animation: pulse 2s infinite;"></i> Cambio auto 5s (<span id="carousel-slide-num">1</span>/${allOutfits.length})
+          </span>
+          <div style="display: flex; gap: 6px;">
+            <button id="carousel-prev-btn" class="btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;"><i class="fas fa-chevron-left"></i></button>
+            <button id="carousel-pause-btn" class="btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;"><i class="fas fa-pause"></i></button>
+            <button id="carousel-next-btn" class="btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;"><i class="fas fa-chevron-right"></i></button>
           </div>
-
-          <div class="outfit-items-flex" style="display: flex; flex-direction: column; gap: 10px;">
-            ${combo.items.map(item => `
-              <div class="outfit-item-card" style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.03); padding: 8px; border-radius: 6px;">
-                <img src="${item.image}" alt="${item.name}" style="width: 50px; height: 60px; object-fit: cover; border-radius: 4px;">
-                <div style="flex: 1;">
-                  <h6 style="margin: 0; font-size: 0.85rem; color: #ffffff;">${item.name}</h6>
-                  <span class="outfit-price" style="font-size: 0.8rem; color: var(--color-accent);">$${item.price.toFixed(2)}</span>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-
-          <div class="outfit-total-row" style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--color-border); display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-size: 0.85rem; color: var(--color-text-muted);">Precio Outfit Completo:</span>
-            <strong style="color: var(--color-accent); font-size: 1.1rem;">$${totalComboPrice.toFixed(2)}</strong>
-          </div>
-
-          <button class="btn-primary buy-combo-btn" data-items='${itemIdsJson}' style="width: 100%; justify-content: center; margin-top: 12px; padding: 10px; font-size: 0.85rem;">
-            <i class="fas fa-shopping-bag"></i> Agregar Outfit Completo
-          </button>
         </div>
-      `;
-    }).join('');
 
-    if (visibleOutfits.length < allOutfits.length) {
-      outfitContainer.innerHTML += `
-        <button id="load-more-combos-btn" class="btn-secondary" style="width: 100%; justify-content: center; margin-top: 16px; padding: 12px;">
-          Cargar Más Looks (${allOutfits.length - visibleOutfits.length} restantes)
-        </button>
-      `;
+        <!-- 5-Second Timer Bar -->
+        <div style="height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-bottom: 12px; overflow: hidden;">
+          <div id="carousel-progress-fill" style="height: 100%; background: var(--color-accent); width: 0%;"></div>
+        </div>
 
-      const loadMoreBtn = document.getElementById('load-more-combos-btn');
-      if (loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', () => {
-          currentDisplayLimit += 20;
-          renderStylistOutfits();
-        });
-      }
+        <!-- Active Outfit Card Slide -->
+        <div id="active-outfit-slide-card"></div>
+      </div>
+    `;
+
+    updateActiveSlide(allOutfits.length);
+    startCarouselTimers(allOutfits.length);
+
+    // Controls Event Listeners
+    const prevBtn = document.getElementById('carousel-prev-btn');
+    const nextBtn = document.getElementById('carousel-next-btn');
+    const pauseBtn = document.getElementById('carousel-pause-btn');
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        slideIndex = (slideIndex - 1 + allOutfits.length) % allOutfits.length;
+        updateActiveSlide(allOutfits.length);
+        startCarouselTimers(allOutfits.length);
+      });
     }
 
-    // Attach click listener for Buy Combo buttons
-    outfitContainer.querySelectorAll('.buy-combo-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        try {
-          const itemIds = JSON.parse(btn.dataset.items);
-          itemIds.forEach(id => store.addToCart(id));
-          showToast('¡Outfit completo de Cita Romántica agregado al carrito!', 'success');
-          overlay.classList.remove('open');
-          drawer.classList.remove('open');
-        } catch (e) {
-          console.error(e);
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        slideIndex = (slideIndex + 1) % allOutfits.length;
+        updateActiveSlide(allOutfits.length);
+        startCarouselTimers(allOutfits.length);
+      });
+    }
+
+    if (pauseBtn) {
+      pauseBtn.addEventListener('click', () => {
+        isPaused = !isPaused;
+        pauseBtn.innerHTML = isPaused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>';
+        if (isPaused) {
+          stopCarouselTimers();
+        } else {
+          startCarouselTimers(allOutfits.length);
         }
       });
-    });
+    }
   }
 }
 
