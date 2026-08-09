@@ -1,5 +1,5 @@
 // ==========================================================================
-// AURA ATELIER - PRODUCT CATALOG DATABASE (600+ UNIQUE HIGH-FASHION ITEMS)
+// AURA ATELIER - PRODUCT CATALOG DATABASE (600+ UNIQUE STYLED ITEMS)
 // ==========================================================================
 
 const MEN_PHOTOS = [
@@ -16,7 +16,13 @@ const MEN_PHOTOS = [
   'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=600&q=80',
   'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=600&q=80',
   'https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80'
+  'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1504257432389-52343af06ae3?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1520975954732-35dd22299614?auto=format&fit=crop&w=600&q=80'
 ];
 
 const WOMEN_PHOTOS = [
@@ -31,7 +37,13 @@ const WOMEN_PHOTOS = [
   'https://images.unsplash.com/photo-1564257631407-4deb1f99d992?auto=format&fit=crop&w=600&q=80',
   'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&w=600&q=80',
   'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80'
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80'
 ];
 
 const ACC_PHOTOS = [
@@ -50,8 +62,17 @@ const ACC_PHOTOS = [
   'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80',
   'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80',
   'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=600&q=80'
+  'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?auto=format&fit=crop&w=600&q=80'
 ];
+
+function getUniqueImageUrl(photoList, index, categoryPrefix) {
+  const rawUrl = photoList[(index - 1) % photoList.length];
+  if (rawUrl.startsWith('http')) {
+    return `${rawUrl}&sig=${categoryPrefix}-${index}`;
+  }
+  return `${rawUrl}?v=${categoryPrefix}-${index}`;
+}
 
 const BASE_PRODUCTS = [
   {
@@ -248,7 +269,7 @@ const BASE_PRODUCTS = [
   }
 ];
 
-// Generator for 250 Men's Clothing Products with Distinct Images
+// Generator for 250 Men's Clothing Products with 100% Unique URLs
 function generate250MenProducts() {
   const menTypes = [
     { name: 'Chaqueta Biker Cuero Nocturna', tag: 'Popular', price: 189.99, desc: 'Chaqueta de cuero vacuno masculino con forro térmico transpirable.' },
@@ -270,7 +291,7 @@ function generate250MenProducts() {
 
   for (let i = 1; i <= 250; i++) {
     const base = menTypes[(i - 1) % menTypes.length];
-    const imgUrl = MEN_PHOTOS[(i - 1) % MEN_PHOTOS.length];
+    const imgUrl = getUniqueImageUrl(MEN_PHOTOS, i, 'men');
     const numStr = i < 10 ? `00${i}` : (i < 100 ? `0${i}` : `${i}`);
     const isDiscount = i % 4 === 0;
     const origPrice = isDiscount ? Math.round(base.price * 1.2) : null;
@@ -296,7 +317,7 @@ function generate250MenProducts() {
   return items;
 }
 
-// Generator for 250 Women's Clothing Products with Distinct Images
+// Generator for 250 Women's Clothing Products with 100% Unique URLs
 function generate250WomenProducts() {
   const womenTypes = [
     { name: 'Vestido de Seda Satinado Drapeado', tag: 'Exclusivo', price: 220.00, desc: 'Vestido confeccionado en seda 100% natural satinada con caída fluida.' },
@@ -315,7 +336,7 @@ function generate250WomenProducts() {
 
   for (let i = 1; i <= 250; i++) {
     const base = womenTypes[(i - 1) % womenTypes.length];
-    const imgUrl = WOMEN_PHOTOS[(i - 1) % WOMEN_PHOTOS.length];
+    const imgUrl = getUniqueImageUrl(WOMEN_PHOTOS, i, 'women');
     const numStr = i < 10 ? `00${i}` : (i < 100 ? `0${i}` : `${i}`);
     const isDiscount = i % 4 === 0;
     const origPrice = isDiscount ? Math.round(base.price * 1.22) : null;
@@ -341,7 +362,7 @@ function generate250WomenProducts() {
   return items;
 }
 
-// Generator for 100 Luxury Accessory Products with Distinct Images
+// Generator for 100 Luxury Accessory Products with 100% Unique URLs
 function generate100Accessories() {
   const accessoryTypes = [
     { name: 'Reloj Chronograph Gold', tag: 'Alta Costura', price: 280, desc: 'Reloj cronógrafo de caja en acero con baño de oro de 18k y cristal de zafiro irrayable.' },
@@ -364,7 +385,7 @@ function generate100Accessories() {
 
   for (let i = 1; i <= 100; i++) {
     const base = accessoryTypes[(i - 1) % accessoryTypes.length];
-    const imgUrl = ACC_PHOTOS[(i - 1) % ACC_PHOTOS.length];
+    const imgUrl = getUniqueImageUrl(ACC_PHOTOS, i, 'acc');
     const itemNumber = i < 10 ? `0${i}` : i;
     const isDiscount = i % 3 === 0;
     const origPrice = isDiscount ? Math.round(base.price * 1.25) : null;
