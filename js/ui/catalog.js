@@ -1,5 +1,5 @@
 // ==========================================================================
-// AURA ATELIER - CATALOG & PRODUCT GRID UI
+// AURA ATELIER - CATALOG & PRODUCT GRID UI (COMPLETE 600+ ITEMS SHOWCASE)
 // ==========================================================================
 
 import { PRODUCTS } from '../data.js';
@@ -11,15 +11,20 @@ let activeCategory = 'all';
 let searchQuery = '';
 let sortBy = 'popular';
 let maxPrice = 500;
+let displayLimit = 24;
 
 export function filterCategory(categoryName) {
-  activeCategory = categoryName || 'all';
+  const normCat = (categoryName === 'todos' || categoryName === 'coleccion') ? 'all' : (categoryName || 'all');
+  activeCategory = normCat;
+  displayLimit = 24;
 
   const categoryTabsContainer = document.querySelector('.category-tabs');
   if (categoryTabsContainer) {
     const tabs = categoryTabsContainer.querySelectorAll('.tab-btn');
     tabs.forEach(t => {
-      if (t.dataset.category === activeCategory) t.classList.add('active');
+      const match = (t.dataset.category === activeCategory) || 
+        (activeCategory === 'all' && (t.dataset.category === 'all' || t.dataset.category === 'todos' || t.dataset.category === 'coleccion'));
+      if (match) t.classList.add('active');
       else t.classList.remove('active');
     });
   }
@@ -38,7 +43,6 @@ if (typeof window !== 'undefined') {
 
 export function initCatalog() {
   const productsGrid = document.getElementById('products-grid');
-  const categoryTabs = document.querySelectorAll('.tab-btn');
   const searchInput = document.getElementById('search-input');
   const sortSelect = document.getElementById('sort-select');
   const priceSlider = document.getElementById('price-slider');
@@ -54,7 +58,10 @@ export function initCatalog() {
       const tabs = categoryTabsContainer.querySelectorAll('.tab-btn');
       tabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      activeCategory = tab.dataset.category || 'all';
+
+      const rawCat = tab.dataset.category || 'all';
+      activeCategory = (rawCat === 'todos' || rawCat === 'coleccion') ? 'all' : rawCat;
+      displayLimit = 24;
       renderProducts();
     });
   }
@@ -66,6 +73,7 @@ export function initCatalog() {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
         searchQuery = e.target.value;
+        displayLimit = 24;
         renderProducts();
       }, 250);
     });
@@ -75,6 +83,7 @@ export function initCatalog() {
   if (sortSelect) {
     sortSelect.addEventListener('change', (e) => {
       sortBy = e.target.value;
+      displayLimit = 24;
       renderProducts();
     });
   }
@@ -84,6 +93,7 @@ export function initCatalog() {
     priceSlider.addEventListener('input', (e) => {
       maxPrice = parseFloat(e.target.value);
       priceValueEl.textContent = `$${maxPrice}`;
+      displayLimit = 24;
       renderProducts();
     });
   }
@@ -92,6 +102,14 @@ export function initCatalog() {
   if (productsGrid) {
     productsGrid.addEventListener('click', (e) => {
       const target = e.target;
+
+      // Load More catalog button
+      const loadMoreBtn = target.closest('#load-more-catalog-btn');
+      if (loadMoreBtn) {
+        displayLimit += 24;
+        renderProducts();
+        return;
+      }
 
       // Quick View button
       const quickViewBtn = target.closest('.quick-view-btn');
@@ -168,7 +186,7 @@ export function renderProducts() {
 
   // Filter products
   let filtered = PRODUCTS.filter(prod => {
-    const matchesCategory = activeCategory === 'all' || 
+    const matchesCategory = activeCategory === 'all' || activeCategory === 'todos' || activeCategory === 'coleccion' || 
       (activeCategory === 'ofertas' ? prod.originalPrice !== null : prod.category === activeCategory);
 
     const matchesSearch = prod.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -202,7 +220,9 @@ export function renderProducts() {
     return;
   }
 
-  productsGrid.innerHTML = filtered.map(prod => {
+  const visible = filtered.slice(0, displayLimit);
+
+  const cardsHtml = visible.map(prod => {
     const isWishlisted = store.isInWishlist(prod.id);
     const hasDiscount = prod.originalPrice !== null;
     const discountPercent = hasDiscount 
@@ -262,6 +282,19 @@ export function renderProducts() {
       </article>
     `;
   }).join('');
+
+  let loadMoreHtml = '';
+  if (visible.length < filtered.length) {
+    loadMoreHtml = `
+      <div class="load-more-catalog-wrapper" style="grid-column: 1 / -1; text-align: center; margin-top: 36px;">
+        <button id="load-more-catalog-btn" class="btn-primary" style="padding: 16px 36px; font-size: 1rem; margin: 0 auto; box-shadow: 0 4px 20px rgba(212,175,55,0.2);">
+          <i class="fas fa-layer-group"></i> Ver Más Productos de la Colección (${filtered.length - visible.length} restantes)
+        </button>
+      </div>
+    `;
+  }
+
+  productsGrid.innerHTML = cardsHtml + loadMoreHtml;
 }
 
 function updateWishlistButtons() {
