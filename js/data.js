@@ -24,7 +24,15 @@ const MEN_PHOTOS = [
   'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
   'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80',
   'https://images.unsplash.com/photo-1504257432389-52343af06ae3?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1520975954732-35dd22299614?auto=format&fit=crop&w=600&q=80'
+  'https://images.unsplash.com/photo-1520975954732-35dd22299614?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1480455624313-e29b44bbfde1?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1504593811423-6dd665756598?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1495105787522-5334e3ffa0ef?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1534030347209-467a5b0ad3e6?auto=format&fit=crop&w=600&q=80'
 ];
 
 const WOMEN_PHOTOS = [
@@ -46,7 +54,14 @@ const WOMEN_PHOTOS = [
   'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=600&q=80',
   'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80',
   'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80'
+  'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1550639525-c97d455acf70?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=600&q=80'
 ];
 
 const ACC_PHOTOS = [
@@ -120,151 +135,119 @@ const BASE_PRODUCTS = [
     rating: 4.8,
     reviews: 64,
     stock: 12,
-    colors: ['#212121', '#546e7a', '#78909c'],
-    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['#121212', '#4e342e', '#424242'],
+    sizes: ['M', 'L', 'XL', 'XXL'],
     image: 'assets/images/hoodie.jpg',
     gallery: ['assets/images/hoodie.jpg'],
-    description: 'Sudadera masculina de algodón orgánico pesado de 450 GSM. Hombros caídos y silueta relajada con bolsa canguro.'
+    description: 'Sudadera masculina de peso pesado (450 GSM) en algodón orgánico cepillado. Diseño relajado de hombros caídos.'
   },
   {
     id: 'prod-4',
-    name: 'Sneakers Blancas Minimal',
-    category: 'accesorios',
-    tag: 'Esencial',
-    price: 145.00,
-    originalPrice: null,
-    rating: 4.7,
-    reviews: 51,
-    stock: 9,
-    colors: ['#ffffff', '#121212'],
-    sizes: ['38', '40', '42', '44'],
-    image: 'assets/images/sneakers.jpg',
-    gallery: ['assets/images/sneakers.jpg'],
-    description: 'Zapatillas de piel de becerro italiana con suela ultraligera de goma vulcanizada. Plantilla anatómica extraíble para máximo confort.'
-  },
-  {
-    id: 'prod-5',
-    name: 'Abrigo Clásico de Lana',
-    category: 'mujeres',
+    name: 'Abrigo Largo de Lana Clásico',
+    category: 'hombres',
     tag: 'Invierno',
     price: 260.00,
     originalPrice: 310.00,
     rating: 4.9,
     reviews: 19,
     stock: 4,
-    colors: ['#4e342e', '#212121', '#9e9e9e'],
-    sizes: ['S', 'M', 'L'],
-    image: 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=600&q=80',
-    gallery: ['https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=600&q=80'],
-    description: 'Corte recto con solapa entallada y cinturón ajustable. Elaborado con mezcla de lana melange de tonos cálidos y acabado aterciopelado.'
+    colors: ['#263238', '#121212', '#3e2723'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    image: 'assets/images/coat.jpg',
+    gallery: ['assets/images/coat.jpg'],
+    description: 'Sobrevestido largo masculino en paño de lana 80% virgen. Estructura sastre con solapa cruzada y cierre de tres botones.'
   },
   {
-    id: 'prod-6',
-    name: 'Bolso de Mano Luxe',
-    category: 'accesorios',
-    tag: 'Edición Limitada',
-    price: 175.00,
-    originalPrice: null,
-    rating: 4.9,
-    reviews: 33,
-    stock: 3,
-    colors: ['#3e2723', '#121212', '#d4af37'],
-    sizes: ['Única'],
-    image: 'assets/images/handbag.jpg',
-    gallery: ['assets/images/handbag.jpg'],
-    description: 'Bolso estructurado en cuero graneado con cierres y detalles dorados en baño de 18k. Incluye correa ajustable de hombro desmontable.'
-  },
-  {
-    id: 'prod-7',
-    name: 'Traje Ejecutivo Slim Fit',
+    id: 'prod-5',
+    name: 'Traje Ejecutivo Azul Merino',
     category: 'hombres',
     tag: 'Alta Costura',
     price: 340.00,
-    originalPrice: 395.00,
+    originalPrice: null,
     rating: 5.0,
-    reviews: 21,
+    reviews: 31,
     stock: 6,
-    colors: ['#1c2833', '#111111'],
-    sizes: ['48', '50', '52', '54'],
+    colors: ['#1c2833', '#121212'],
+    sizes: ['S', 'M', 'L', 'XL'],
     image: 'assets/images/men_suit.jpg',
     gallery: ['assets/images/men_suit.jpg'],
-    description: 'Traje de 2 piezas confeccionado en mezcla de lana merino azul marengo. Solapa de muesca entallada, forro de satén suave y pantalones con raya marcada.'
+    description: 'Traje masculino de dos piezas en mezcla de lana merino azul marino. Solapa de muesca clásica y corte entallado slim fit.'
   },
   {
-    id: 'prod-8',
-    name: 'Camisa Lino Italiano Pure',
+    id: 'prod-6',
+    name: 'Camisa Lino Orgánico Italiana',
     category: 'hombres',
     tag: 'Verano Luxe',
     price: 110.00,
-    originalPrice: null,
-    rating: 4.8,
-    reviews: 39,
-    stock: 14,
-    colors: ['#ffffff', '#bbdefb', '#d7ccc8'],
+    originalPrice: 130.00,
+    rating: 4.7,
+    reviews: 53,
+    stock: 15,
+    colors: ['#ffffff', '#e0d8cf', '#263238'],
     sizes: ['S', 'M', 'L', 'XL'],
     image: 'assets/images/men_shirt.jpg',
     gallery: ['assets/images/men_shirt.jpg'],
-    description: 'Camisa confeccionada en 100% lino orgánico italiano de tacto ultra suave y transpirable. Cuello mao y botones de nácar natural.'
+    description: 'Camisa para hombre 100% lino de cultivo italiano. Botones de nácar natural y tratamiento de lavado suave.'
   },
   {
-    id: 'prod-9',
-    name: 'Pantalón Tailored Pleated',
+    id: 'prod-7',
+    name: 'Pantalón Tailored Pleated Gabardina',
     category: 'hombres',
     tag: 'Tendencia',
     price: 135.00,
-    originalPrice: 155.00,
-    rating: 4.9,
-    reviews: 18,
-    stock: 8,
-    colors: ['#d7ccc8', '#424242', '#121212'],
-    sizes: ['30', '32', '34', '36'],
+    originalPrice: null,
+    rating: 4.8,
+    reviews: 22,
+    stock: 9,
+    colors: ['#3e2723', '#121212', '#78909c'],
+    sizes: ['S', 'M', 'L', 'XL'],
     image: 'assets/images/men_trousers.jpg',
     gallery: ['assets/images/men_trousers.jpg'],
-    description: 'Pantalón de vestir de tiro alto con pinzas dobles en gabardina beige de algodón y lana. Silueta holgada con caída elegante y bolsillos laterales.'
+    description: 'Pantalón masculino sastre de doble pinza en gabardina de lana de tiro alto con ajustadores laterales de hebilla metálica.'
   },
   {
-    id: 'prod-10',
-    name: 'Chaqueta Bomber Suede Camel',
+    id: 'prod-8',
+    name: 'Chaqueta Bomber Ante Suede Camel',
     category: 'hombres',
     tag: 'Edición Limitada',
     price: 245.00,
-    originalPrice: 290.00,
-    rating: 5.0,
-    reviews: 27,
-    stock: 5,
-    colors: ['#c67d0a', '#3e2723'],
-    sizes: ['S', 'M', 'L', 'XL'],
+    originalPrice: 280.00,
+    rating: 4.9,
+    reviews: 14,
+    stock: 3,
+    colors: ['#c67d0a', '#121212'],
+    sizes: ['M', 'L', 'XL'],
     image: 'assets/images/men_bomber.jpg',
     gallery: ['assets/images/men_bomber.jpg'],
-    description: 'Chaqueta estilo bomber en cuero de ante suave tono camel. Puños y cuello elásticos acanalados con doble cremallera metálica de latón.'
+    description: 'Chaqueta estilo bomber masculina en ante de piel natural tono camel. Cuello y puños acanalados en punto de lana.'
   },
   {
-    id: 'prod-11',
-    name: 'Chaqueta Biker Cuero Femme',
+    id: 'prod-9',
+    name: 'Chaqueta Cuero Femme Biker',
     category: 'mujeres',
-    tag: 'Tendencia',
+    tag: 'Popular',
     price: 195.00,
     originalPrice: 230.00,
     rating: 4.9,
-    reviews: 35,
+    reviews: 37,
     stock: 8,
-    colors: ['#121212', '#4e342e'],
+    colors: ['#121212', '#3e2723'],
     sizes: ['XS', 'S', 'M', 'L'],
     image: 'assets/images/women_jacket.jpg',
     gallery: ['assets/images/women_jacket.jpg'],
-    description: 'Chaqueta estilo biker entallada para mujer en piel de becerro negra con solapas cruzadas y herrajes plateados cromados.'
+    description: 'Chaqueta biker para mujer en piel bovina negra entallada con cremalleras asimétricas y cinturón con hebilla.'
   },
   {
-    id: 'prod-12',
-    name: 'Hoodie Oversized Femme Velvet',
+    id: 'prod-10',
+    name: 'Hoodie Oversized Velvet Femme',
     category: 'mujeres',
     tag: 'Nuevo',
     price: 89.00,
     originalPrice: null,
     rating: 4.8,
-    reviews: 22,
+    reviews: 29,
     stock: 11,
-    colors: ['#212121', '#8d6e63'],
+    colors: ['#4e342e', '#121212', '#e0d8cf'],
     sizes: ['XS', 'S', 'M', 'L'],
     image: 'assets/images/women_hoodie.jpg',
     gallery: ['assets/images/women_hoodie.jpg'],
@@ -272,7 +255,7 @@ const BASE_PRODUCTS = [
   }
 ];
 
-// Generator for 250 Men's Clothing Products with 100% Unique URLs
+// Generator for 350 Men's Clothing Products with 100% Unique URLs
 function generate250MenProducts() {
   const menTypes = [
     { name: 'Chaqueta Biker Cuero Nocturna', tag: 'Popular', price: 189.99, desc: 'Chaqueta de cuero vacuno masculino con forro térmico transpirable.' },
@@ -280,7 +263,16 @@ function generate250MenProducts() {
     { name: 'Traje Ejecutivo Merino Slim Fit', tag: 'Alta Costura', price: 340.00, desc: 'Traje de 2 piezas en mezcla de lana merino azul marengo con solapa de muesca.' },
     { name: 'Camisa Lino Italiano Pure', tag: 'Verano Luxe', price: 110.00, desc: 'Camisa masculina 100% lino orgánico italiano con cuello mao y botones de nácar.' },
     { name: 'Pantalón Tailored Pleated Gabardina', tag: 'Tendencia', price: 135.00, desc: 'Pantalón masculino de tiro alto con doble pinza en gabardina beige de lana.' },
-    { name: 'Chaqueta Bomber Suede Camel', tag: 'Edición Limitada', price: 245.00, desc: 'Chaqueta bomber masculina en ante de cuero tono camel con puños acanalados.' }
+    { name: 'Chaqueta Bomber Suede Camel', tag: 'Edición Limitada', price: 245.00, desc: 'Chaqueta bomber masculina en ante de cuero tono camel con puños acanalados.' },
+    { name: 'Blazer Formal de Lana Fría', tag: 'Elegancia', price: 295.00, desc: 'Blazer cruzado para hombre en lana fría británica tono gris marengo.' },
+    { name: 'Trench Coat Clásico Camel', tag: 'Otoño Luxe', price: 310.00, desc: 'Gabardina clásica impermeable para hombre con cinturón hebilla y solapas.' },
+    { name: 'Sweater de Cachemira Cuello Alto', tag: 'Invierno VIP', price: 175.00, desc: 'Jersei masculino en 100% cachemira virgen con acabado suave ultrasuave.' },
+    { name: 'Camisa Oxford Slim Fit Oxford', tag: 'Esencial', price: 95.00, desc: 'Camisa masculina formal de algodón cepillado de máxima calidad.' },
+    { name: 'Cardigan Tejido en Punto Grueso', tag: 'Tendencia', price: 140.00, desc: 'Chaqueta de punto grueso para hombre con botones de madera noble.' },
+    { name: 'Polo Piqué Algodón Mercerizado', tag: 'Verano Luxe', price: 78.00, desc: 'Polo masculino premium en tejido piqué mercerizado con brillo satinado.' },
+    { name: 'Pantalón Chino Luxe Structured', tag: 'Casual Chic', price: 115.00, desc: 'Pantalón chino masculino en sarga elástica con acabado suave antidesgaste.' },
+    { name: 'Chaqueta Denim Trucker Oversized', tag: 'Streetwear', price: 165.00, desc: 'Chaqueta vaquera masculina en mezclilla pesada de tono azul vintage.' },
+    { name: 'Abrigo Largo de Paño de Lana', tag: 'Alta Costura', price: 380.00, desc: 'Abrigo masculino sobretodo en paño de lana cashmere de corte impecable.' }
   ];
 
   const items = [];
@@ -292,7 +284,7 @@ function generate250MenProducts() {
     ['#d7ccc8', '#111111']
   ];
 
-  for (let i = 1; i <= 250; i++) {
+  for (let i = 1; i <= 350; i++) {
     const base = menTypes[(i - 1) % menTypes.length];
     const imgUrl = getUniqueImageUrl(MEN_PHOTOS, i, 'men');
     const numStr = i < 10 ? `00${i}` : (i < 100 ? `0${i}` : `${i}`);
@@ -320,13 +312,24 @@ function generate250MenProducts() {
   return items;
 }
 
-// Generator for 250 Women's Clothing Products with 100% Unique URLs
+// Generator for 350 Women's Clothing Products with 100% Unique URLs
 function generate250WomenProducts() {
   const womenTypes = [
     { name: 'Vestido de Seda Satinado Drapeado', tag: 'Exclusivo', price: 220.00, desc: 'Vestido confeccionado en seda 100% natural satinada con caída fluida.' },
     { name: 'Abrigo Clásico de Lana Melange', tag: 'Invierno', price: 260.00, desc: 'Abrigo femenino de corte recto en lana melange con cinturón ajustable.' },
     { name: 'Chaqueta Biker Cuero Femme', tag: 'Tendencia', price: 195.00, desc: 'Chaqueta biker entallada para mujer en piel negra con solapas cruzadas.' },
-    { name: 'Hoodie Velvet Oversized Femme', tag: 'Nuevo', price: 89.00, desc: 'Sudadera femenina oversized en algodón felpado de tacto aterciopelado.' }
+    { name: 'Hoodie Velvet Oversized Femme', tag: 'Nuevo', price: 89.00, desc: 'Sudadera femenina oversized en algodón felpado de tacto aterciopelado.' },
+    { name: 'Vestido de Gala Escote Espalda', tag: 'Alta Costura', price: 320.00, desc: 'Vestido largo de noche para mujer con escote profundo en espalda y corte sirena.' },
+    { name: 'Blazer Oversized Tailored Femme', tag: 'Tendencia', price: 210.00, desc: 'Chaqueta blazer holgada con hombreras estructuradas en crepe de lana.' },
+    { name: 'Trench Coat Femenino Impermeable', tag: 'Elegancia', price: 285.00, desc: 'Gabardina clásica cruzada para mujer con cinturón y botones de cuerno.' },
+    { name: 'Blusa de Seda Pura Manga Larga', tag: 'Luxe', price: 145.00, desc: 'Blusa femenina en seda natural con lazada al cuello y puños camiseros.' },
+    { name: 'Falda Plisada Midi Satinada', tag: 'Tendencia', price: 125.00, desc: 'Falda midi de vuelo plisado en tejido satinado metálico de tono champán.' },
+    { name: 'Sweater de Cuello V en Cachemira', tag: 'Soft Luxe', price: 168.00, desc: 'Jersei de tacto suave para mujer en hilo fino de cachemira y seda.' },
+    { name: 'Vestido Corto Cocktail Elegante', tag: 'Fiesta', price: 185.00, desc: 'Vestido corto entallado con mangas abullonadas y aplicaciones de guipure.' },
+    { name: 'Pantalón Palazo Fluido de Seda', tag: 'Verano Luxe', price: 155.00, desc: 'Pantalón ancho femenino de tiro alto en viscosa satén de movimiento ligero.' },
+    { name: 'Chaqueta Blazer Corta Tweed', tag: 'Chic', price: 240.00, desc: 'Chaqueta corta estilo Chanel en tejido tweed con botones joya de perlas.' },
+    { name: 'Cardigan Largo de Lana Alpaca', tag: 'Invierno', price: 190.00, desc: 'Chaqueta de punto abierto para mujer en lana alpaca peruana extra cálida.' },
+    { name: 'Conjunto Top & Falda Elegante', tag: 'Exclusivo', price: 275.00, desc: 'Set de 2 piezas femenino de top estructurado y falda lápiz de alta costura.' }
   ];
 
   const items = [];
@@ -337,7 +340,7 @@ function generate250WomenProducts() {
     ['#212121', '#d4af37']
   ];
 
-  for (let i = 1; i <= 250; i++) {
+  for (let i = 1; i <= 350; i++) {
     const base = womenTypes[(i - 1) % womenTypes.length];
     const imgUrl = getUniqueImageUrl(WOMEN_PHOTOS, i, 'women');
     const numStr = i < 10 ? `00${i}` : (i < 100 ? `0${i}` : `${i}`);
