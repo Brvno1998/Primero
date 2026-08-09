@@ -185,6 +185,44 @@ function initAiStylist() {
           items: [menProducts[i % menProducts.length], accProducts[i % accProducts.length]]
         });
       }
+    } else if (occasion === 'noche') {
+      const menNightTitles = [
+        'Fiesta de Noche VIP Club & Lounge',
+        'Gala Nocturna & Cóctel Exclusivo',
+        'Noche de Gala en Suite Presidencial',
+        'Fiesta Nocturna Leather & Gold',
+        'Fiesta de Noche High Fashion'
+      ];
+      const womenNightTitles = [
+        'Noche de Gala Glamour Satinado',
+        'Party Night Silk & Diamond',
+        'Fiesta de Noche Chic & Sophisticated',
+        'Gala Nocturna Velvet Luxury',
+        'Noche de Fiesta Alta Costura'
+      ];
+
+      // Interleave 150 Men & 150 Women Nightlife Combos for "Todos"
+      for (let i = 0; i < 150; i++) {
+        const numStr = i < 9 ? `00${i + 1}` : (i < 99 ? `0${i + 1}` : `${i + 1}`);
+
+        // Women combo
+        outfits.push({
+          id: `combo-women-noche-${i + 1}`,
+          title: `Look Fiesta Noche ♀ N°${numStr} (${womenNightTitles[i % womenNightTitles.length]})`,
+          gender: 'mujeres',
+          badgeText: '♀ Mujer',
+          items: [womenProducts[(i + 2) % womenProducts.length], accProducts[(i + 1) % accProducts.length]]
+        });
+
+        // Men combo
+        outfits.push({
+          id: `combo-men-noche-${i + 1}`,
+          title: `Look Fiesta Noche ♂ N°${numStr} (${menNightTitles[i % menNightTitles.length]})`,
+          gender: 'hombres',
+          badgeText: '♂ Hombre',
+          items: [menProducts[(i + 3) % menProducts.length], accProducts[(i + 2) % accProducts.length]]
+        });
+      }
     } else {
       for (let i = 0; i < 50; i++) {
         const p1 = (i % 2 === 0) ? menProducts[i % menProducts.length] : womenProducts[i % womenProducts.length];
@@ -254,7 +292,7 @@ function initAiStylist() {
         try {
           const itemIds = JSON.parse(buyBtn.dataset.items);
           itemIds.forEach(id => store.addToCart(id));
-          showToast('¡Outfit completo de Cita Romántica agregado al carrito!', 'success');
+          showToast('¡Outfit completo agregado al carrito!', 'success');
           overlay.classList.remove('open');
           drawer.classList.remove('open');
           stopCarouselTimers();
@@ -275,8 +313,9 @@ function initAiStylist() {
     activeOutfitsList = allOutfits;
 
     if (headingEl) {
-      const occasionText = currentOccasion === 'cita' ? 'Cita Romántica' : currentOccasion;
-      headingEl.textContent = `Carrusel de Outfits Cita Romántica (${allOutfits.length} Looks)`;
+      const occasionMap = { cita: 'Cita Romántica', noche: 'Fiesta de Noche', festival: 'Festival Urbano', oficina: 'Oficina Casual' };
+      const occasionText = occasionMap[currentOccasion] || currentOccasion;
+      headingEl.textContent = `Carrusel de Outfits ${occasionText} (${allOutfits.length} Looks)`;
     }
 
     outfitContainer.innerHTML = `
