@@ -959,6 +959,46 @@
     </div>
   </div>
 
+  <!-- Newsletter Direct Gmail Extension & Success Modal -->
+  <div class="modal-overlay" id="newsletter-modal">
+    <div class="modal-content" style="max-width: 550px; grid-template-columns: 1fr; padding: 36px; text-align: center;">
+      <button class="modal-close-btn" id="close-newsletter-modal-btn" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+
+      <div style="font-size: 3rem; color: var(--color-accent); margin-bottom: 16px;">
+        <i class="fas fa-envelope-circle-check"></i>
+      </div>
+
+      <span class="section-subtitle"><i class="fas fa-crown"></i> Club Exclusivo AURA</span>
+      <h2 class="section-title" style="font-size: 1.7rem; margin-bottom: 12px;">¡Suscripción Confirmada!</h2>
+
+      <p class="modal-description" style="font-size: 0.95rem; margin-bottom: 20px;">
+        Hemos enviado tu regalo de bienvenida con un <strong>15% OFF</strong> en tu primera compra al correo:
+        <br><strong id="newsletter-modal-email-display" style="color: var(--color-accent); font-size: 1.05rem; word-break: break-all;">correo@ejemplo.com</strong>
+      </p>
+
+      <!-- Promo Code Box -->
+      <div style="background: rgba(212,175,55,0.1); border: 1px dashed var(--color-accent); border-radius: 8px; padding: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="text-align: left;">
+          <small style="color: var(--color-text-muted); display: block;">Tu código de descuento:</small>
+          <strong style="font-size: 1.3rem; letter-spacing: 2px; color: var(--color-accent);">AURA15OFF</strong>
+        </div>
+        <button id="copy-promo-code-btn" class="btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">
+          <i class="fas fa-copy"></i> Copiar
+        </button>
+      </div>
+
+      <!-- Direct Access Buttons -->
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <a id="open-gmail-direct-btn" href="https://mail.google.com" target="_blank" rel="noopener noreferrer" class="btn-primary" style="width: 100%; justify-content: center; font-size: 1rem; text-decoration: none; padding: 14px;">
+          <i class="fab fa-google"></i> Abrir mi Correo en Gmail <i class="fas fa-arrow-up-right-from-square"></i>
+        </a>
+        <a href="https://outlook.live.com" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="width: 100%; justify-content: center; font-size: 0.85rem; text-decoration: none; padding: 10px;">
+          <i class="fas fa-envelope"></i> Abrir en Outlook / Hotmail
+        </a>
+      </div>
+    </div>
+  </div>
+
   <!-- Floating AI Stylist Action Button -->
   <button id="ai-stylist-fab" class="btn-primary" style="position: fixed; bottom: 24px; left: 24px; z-index: 800; box-shadow: var(--shadow-lg); border: 1px solid var(--border-focus);" aria-label="Abrir Stylist IA">
     <i class="fas fa-wand-magic-sparkles"></i> Stylist IA

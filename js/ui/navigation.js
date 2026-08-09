@@ -79,16 +79,45 @@ export function initNavigation() {
     });
   }
 
-  // Newsletter subscription
+  // Newsletter subscription with Direct Gmail extension modal
   if (newsletterForm) {
+    const newsletterModal = document.getElementById('newsletter-modal');
+    const closeNewsletterBtn = document.getElementById('close-newsletter-modal-btn');
+    const emailDisplay = document.getElementById('newsletter-modal-email-display');
+    const copyPromoBtn = document.getElementById('copy-promo-code-btn');
+
     newsletterForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const input = newsletterForm.querySelector('input[type="email"]');
       if (input && input.value) {
-        showToast('¡Gracias por suscribirte! Revisa tu email para tu código del 15% OFF.', 'success');
+        const userEmail = input.value.trim();
+        if (emailDisplay) emailDisplay.textContent = userEmail;
+        if (newsletterModal) newsletterModal.classList.add('open');
+        showToast('¡Gracias por suscribirte! Tu código del 15% OFF ha sido enviado.', 'success');
         input.value = '';
       }
     });
+
+    if (closeNewsletterBtn && newsletterModal) {
+      closeNewsletterBtn.addEventListener('click', () => {
+        newsletterModal.classList.remove('open');
+      });
+      newsletterModal.addEventListener('click', (e) => {
+        if (e.target === newsletterModal) {
+          newsletterModal.classList.remove('open');
+        }
+      });
+    }
+
+    if (copyPromoBtn) {
+      copyPromoBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText('AURA15OFF').then(() => {
+          showToast('¡Código AURA15OFF copiado al portapapeles!', 'success');
+        }).catch(() => {
+          showToast('Código AURA15OFF listo para usar.', 'info');
+        });
+      });
+    }
   }
 
   renderTestimonials();
