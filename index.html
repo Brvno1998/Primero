@@ -190,14 +190,39 @@
     </div>
   </section>
 
-  <!-- Promo Banner -->
-  <section class="container" id="promo">
-    <div class="promo-banner">
-      <div class="promo-content">
-        <span class="tagline">Descuento de Temporada</span>
-        <h2 class="promo-title">Hasta 30% OFF en Ropa de Abrigo</h2>
-        <p class="promo-subtitle">Aprovecha nuestras ofertas por tiempo limitado en abrigos de lana y chaquetas de cuero con el código <strong>AURA2026</strong>.</p>
-        <a href="#catalog" class="btn-primary">Ver Colección de Invierno</a>
+  <!-- Flash Sale Live Countdown Section -->
+  <section class="flash-sale-section" id="flash-sale-section">
+    <div class="container">
+      <div class="flash-sale-card">
+        <div class="flash-sale-content">
+          <span class="flash-tag"><i class="fas fa-bolt"></i> Venta Relámpago AURA</span>
+          <h2 class="flash-title">Oferta Exclusiva 24 Horas</h2>
+          <p class="flash-desc">Obtén hasta un <strong>40% OFF</strong> en piezas seleccionadas de streetwear y lujo urbano. La oferta termina pronto:</p>
+          
+          <div class="countdown-box" id="flash-countdown">
+            <div class="time-unit">
+              <span id="timer-hours">04</span>
+              <small>Horas</small>
+            </div>
+            <span class="time-colon">:</span>
+            <div class="time-unit">
+              <span id="timer-minutes">18</span>
+              <small>Minutos</small>
+            </div>
+            <span class="time-colon">:</span>
+            <div class="time-unit">
+              <span id="timer-seconds">32</span>
+              <small>Segundos</small>
+            </div>
+          </div>
+
+          <a href="#catalog" class="btn-primary" style="margin-top: 24px;">
+            Aprovechar Descuento <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+        <div class="flash-sale-img">
+          <img src="assets/images/flash_sale.jpg" alt="Venta Relámpago AURA">
+        </div>
       </div>
     </div>
   </section>
@@ -790,6 +815,146 @@
       </div>
     </div>
   </div>
+
+  <!-- AI Stylist Drawer Panel -->
+  <div class="cart-overlay" id="stylist-overlay"></div>
+  <aside class="cart-drawer" id="stylist-drawer">
+    <div class="cart-header">
+      <h3><i class="fas fa-wand-magic-sparkles" style="color: var(--color-accent);"></i> AURA Stylist IA</h3>
+      <button class="close-btn" id="close-stylist-btn" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" style="padding: 24px;">
+      <div class="panel-hero-img">
+        <img src="assets/images/stylist.jpg" alt="AURA AI Stylist">
+      </div>
+      <p class="panel-lead" style="font-size: 0.95rem;">
+        ¿Para qué ocasión estás buscando outfit hoy? Selecciona una opción y nuestra IA combinará las mejores piezas del catálogo:
+      </p>
+
+      <div class="occasion-selector-grid">
+        <button class="btn-secondary occasion-btn active" data-occasion="cita"><i class="fas fa-wine-glass"></i> Cita Romántica</button>
+        <button class="btn-secondary occasion-btn" data-occasion="noche"><i class="fas fa-moon"></i> Fiesta de Noche</button>
+        <button class="btn-secondary occasion-btn" data-occasion="festival"><i class="fas fa-music"></i> Festival Urbano</button>
+        <button class="btn-secondary occasion-btn" data-occasion="oficina"><i class="fas fa-briefcase"></i> Oficina Casual</button>
+      </div>
+
+      <h4 class="panel-section-title">Outfit Recomendado en Combo</h4>
+      <div id="stylist-outfit-container">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </aside>
+
+  <!-- Virtual Fitting Room Modal -->
+  <div class="modal-overlay" id="virtual-fitting-modal">
+    <div class="modal-content" style="max-width: 800px; grid-template-columns: 1fr 1fr;">
+      <button class="modal-close-btn" id="close-fitting-btn" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+      <div class="modal-img-container" style="position: relative;">
+        <img src="assets/images/virtual_fitting.jpg" alt="Probador Virtual 3D">
+        <div class="fitting-overlay-badge"><i class="fas fa-cube"></i> Simulación 3D</div>
+      </div>
+      <div class="modal-details" style="padding: 30px;">
+        <span class="product-category">Tecnología AURA Fit</span>
+        <h2 class="product-title">Probador Virtual 3D</h2>
+        <p class="modal-description">Ajusta tus parámetros anatómicos para simular la caída de la prenda:</p>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label>Altura (cm): <strong id="fitting-height-val">175 cm</strong></label>
+          <input type="range" id="fitting-height-slider" min="150" max="200" value="175" style="width: 100%;">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label>Peso (kg): <strong id="fitting-weight-val">70 kg</strong></label>
+          <input type="range" id="fitting-weight-slider" min="45" max="110" value="70" style="width: 100%;">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 24px;">
+          <label>Preferencia de Ajuste:</label>
+          <div class="size-options">
+            <button class="size-btn fit-pref-btn" data-fit="slim">Entallado</button>
+            <button class="size-btn fit-pref-btn selected" data-fit="regular">Normal</button>
+            <button class="size-btn fit-pref-btn" data-fit="oversized">Oversized</button>
+          </div>
+        </div>
+
+        <div id="fitting-result-box" class="dest-info-box" style="margin-bottom: 20px;">
+          <i class="fas fa-circle-check"></i> Resultado: Talla recomendada <strong>M (Corte Regular)</strong>
+        </div>
+
+        <button class="btn-primary" id="fitting-apply-btn" style="width: 100%; justify-content: center;">
+          <i class="fas fa-check"></i> Usar Esta Talla
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Side-by-Side Product Comparison Modal -->
+  <div class="modal-overlay" id="compare-modal">
+    <div class="modal-content" style="max-width: 900px; grid-template-columns: 1fr; padding: 36px;">
+      <button class="modal-close-btn" id="close-compare-btn" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+      <div class="section-header text-center" style="margin-bottom: 24px;">
+        <span class="section-subtitle"><i class="fas fa-columns"></i> Tabla Comparativa</span>
+        <h2 class="section-title" style="font-size: 1.8rem;">Comparador de Productos</h2>
+      </div>
+
+      <div class="table-responsive">
+        <table class="panel-table" id="compare-table">
+          <!-- Rendered via JS -->
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Printable Invoice Receipt Modal -->
+  <div class="modal-overlay" id="invoice-modal">
+    <div class="modal-content" style="max-width: 650px; grid-template-columns: 1fr; padding: 40px; background: #ffffff; color: #111111;" id="printable-receipt">
+      <button class="modal-close-btn" id="close-invoice-btn" aria-label="Cerrar" style="background: #111; color: #fff;"><i class="fas fa-times"></i></button>
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #111; padding-bottom: 16px; margin-bottom: 24px;">
+        <div>
+          <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin: 0; color: #111;">AURA ATELIER</h2>
+          <span style="font-size: 0.85rem; color: #666;">Factura / Comprobante de Compra</span>
+        </div>
+        <div style="text-align: right;">
+          <strong id="invoice-order-id">#AURA-98412</strong><br>
+          <small id="invoice-date">08/08/2026</small>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 24px;">
+        <h4 style="margin-bottom: 8px; color: #111;">Cliente:</h4>
+        <p id="invoice-client-name" style="margin: 0; color: #444;">Carlos Mendoza</p>
+        <p id="invoice-client-address" style="margin: 0; color: #444;">Av. de la Moda 108, Madrid</p>
+      </div>
+
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; color: #111;">
+        <thead>
+          <tr style="border-bottom: 2px solid #ddd;">
+            <th style="text-align: left; padding: 8px 0;">Producto</th>
+            <th style="text-align: center; padding: 8px 0;">Cant.</th>
+            <th style="text-align: right; padding: 8px 0;">Precio</th>
+          </tr>
+        </thead>
+        <tbody id="invoice-items-body">
+          <!-- Rendered via JS -->
+        </tbody>
+      </table>
+
+      <div style="text-align: right; border-top: 2px solid #111; padding-top: 16px; margin-bottom: 24px;">
+        <h3 style="font-size: 1.4rem; color: #111; margin: 0;">Total Pagado: <span id="invoice-total-amount">$0.00</span></h3>
+        <small style="color: #10b981; font-weight: bold;"><i class="fas fa-check-circle"></i> PAGO VERIFICADO Y PROCESADO</small>
+      </div>
+
+      <button id="print-invoice-btn" class="btn-primary" style="width: 100%; justify-content: center; background: #111; color: #fff;">
+        <i class="fas fa-print"></i> Imprimir / Guardar en PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- Floating AI Stylist Action Button -->
+  <button id="ai-stylist-fab" class="btn-primary" style="position: fixed; bottom: 24px; left: 24px; z-index: 800; box-shadow: var(--shadow-lg); border: 1px solid var(--border-focus);" aria-label="Abrir Stylist IA">
+    <i class="fas fa-wand-magic-sparkles"></i> Stylist IA
+  </button>
 
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toast-container"></div>

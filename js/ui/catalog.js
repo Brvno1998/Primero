@@ -102,6 +102,24 @@ export function initCatalog() {
         }
         return;
       }
+
+      // Compare button
+      const compareBtn = target.closest('.compare-card-btn');
+      if (compareBtn) {
+        const prodId = compareBtn.dataset.id;
+        if (window.openProductComparison) {
+          window.openProductComparison(prodId, prodId === 'prod-1' ? 'prod-3' : 'prod-1');
+        }
+        return;
+      }
+
+      // Virtual Fit button
+      const fitBtn = target.closest('.fit-card-btn');
+      if (fitBtn) {
+        const modal = document.getElementById('virtual-fitting-modal');
+        if (modal) modal.classList.add('open');
+        return;
+      }
     });
   }
 
@@ -177,8 +195,14 @@ export function renderProducts() {
           </button>
 
           <div class="product-actions-overlay">
-            <button class="quick-view-btn" data-id="${prod.id}">
+            <button class="quick-view-btn" data-id="${prod.id}" title="Vista previa">
               <i class="fas fa-eye"></i> Vista rápida
+            </button>
+            <button class="compare-card-btn" data-id="${prod.id}" title="Comparar producto">
+              <i class="fas fa-arrows-split-up-and-left"></i> Comparar
+            </button>
+            <button class="fit-card-btn" data-id="${prod.id}" title="Probador 3D">
+              <i class="fas fa-child"></i> Probador
             </button>
           </div>
         </div>

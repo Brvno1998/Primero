@@ -144,5 +144,20 @@ function processPayment() {
     store.clearCart();
     goToStep(3);
     showToast('¡Pago procesado con éxito! Gracias por tu compra.', 'success');
+
+    // Add Invoice print button to step 3
+    const step3 = document.getElementById('checkout-step-3');
+    if (step3 && !document.getElementById('checkout-invoice-btn')) {
+      const btn = document.createElement('button');
+      btn.id = 'checkout-invoice-btn';
+      btn.className = 'btn-primary';
+      btn.style.cssText = 'margin-top: 20px; width: 100%; justify-content: center;';
+      btn.innerHTML = '<i class="fas fa-file-invoice"></i> Ver y Descargar Factura PDF';
+      btn.addEventListener('click', () => {
+        const invoiceModal = document.getElementById('invoice-modal');
+        if (invoiceModal) invoiceModal.classList.add('open');
+      });
+      step3.appendChild(btn);
+    }
   }, 1500);
 }
