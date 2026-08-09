@@ -3,7 +3,7 @@
 // ==========================================================================
 
 import { PRODUCTS } from '../data.js';
-import { addToCart } from '../store.js';
+import { store } from '../store.js';
 import { showToast } from './toast.js';
 
 export function initAdvancedFeatures() {
@@ -126,7 +126,7 @@ function initAiStylist() {
     const buyOutfitBtn = document.getElementById('buy-outfit-btn');
     if (buyOutfitBtn) {
       buyOutfitBtn.addEventListener('click', () => {
-        items.forEach(item => addToCart(item.id));
+        items.forEach(item => store.addToCart(item.id));
         showToast('¡Outfit completo agregado al carrito!', 'success');
         overlay.classList.remove('open');
         drawer.classList.remove('open');
@@ -217,6 +217,17 @@ function initProductComparison() {
     closeBtn.addEventListener('click', () => compareModal.classList.remove('open'));
   }
 
+  compareTable.addEventListener('click', (e) => {
+    const btn = e.target.closest('.compare-add-btn');
+    if (btn) {
+      const id = btn.dataset.id;
+      const prod = PRODUCTS.find(p => p.id === id);
+      store.addToCart(id);
+      showToast(`¡${prod ? prod.name : 'Producto'} agregado al carrito!`, 'success');
+      compareModal.classList.remove('open');
+    }
+  });
+
   window.openProductComparison = function(id1 = 'prod-1', id2 = 'prod-3') {
     const p1 = PRODUCTS.find(p => p.id === id1) || PRODUCTS[0];
     const p2 = PRODUCTS.find(p => p.id === id2) || PRODUCTS[2];
@@ -234,7 +245,7 @@ function initProductComparison() {
         <tr><td><strong>Categoría</strong></td><td>${p1.category}</td><td>${p2.category}</td></tr>
         <tr><td><strong>Calificación</strong></td><td>★ ${p1.rating} (${p1.reviews} opiniones)</td><td>★ ${p2.rating} (${p2.reviews} opiniones)</td></tr>
         <tr><td><strong>Materiales</strong></td><td>100% Cuero Vacuno / Seda</td><td>450 GSM Algodón Orgánico</td></tr>
-        <tr><td><strong>Acción</strong></td><td><button class="btn-primary style="font-size: 0.8rem;" onclick="addToCart('${p1.id}')">Agregar</button></td><td><button class="btn-primary style="font-size: 0.8rem;" onclick="addToCart('${p2.id}')">Agregar</button></td></tr>
+        <tr><td><strong>Acción</strong></td><td><button class="btn-primary compare-add-btn" data-id="${p1.id}" style="font-size: 0.8rem;">Agregar</button></td><td><button class="btn-primary compare-add-btn" data-id="${p2.id}" style="font-size: 0.8rem;">Agregar</button></td></tr>
       </tbody>
     `;
 

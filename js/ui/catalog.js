@@ -20,15 +20,20 @@ export function initCatalog() {
   const priceSlider = document.getElementById('price-slider');
   const priceValueEl = document.getElementById('price-value');
 
-  // Category filter tabs
-  categoryTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      categoryTabs.forEach(t => t.classList.remove('active'));
+  // Category filter tabs with container delegation
+  const categoryTabsContainer = document.querySelector('.category-tabs');
+  if (categoryTabsContainer) {
+    categoryTabsContainer.addEventListener('click', (e) => {
+      const tab = e.target.closest('.tab-btn');
+      if (!tab) return;
+
+      const tabs = categoryTabsContainer.querySelectorAll('.tab-btn');
+      tabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      activeCategory = tab.dataset.category;
+      activeCategory = tab.dataset.category || 'all';
       renderProducts();
     });
-  });
+  }
 
   // Search input with debounce
   if (searchInput) {
