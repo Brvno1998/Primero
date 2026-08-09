@@ -1,5 +1,5 @@
 // ==========================================================================
-// AURA ATELIER - PRODUCT CATALOG DATABASE (STRICT GENDER FILTERING)
+// AURA ATELIER - PRODUCT CATALOG DATABASE (VERIFIED GENDER IMAGERY)
 // ==========================================================================
 
 const MEN_PHOTOS = [
@@ -10,6 +10,7 @@ const MEN_PHOTOS = [
   'assets/images/men_shirt.jpg',
   'assets/images/men_trousers.jpg',
   'assets/images/men_bomber.jpg',
+  'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=600&q=80',
   'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=600&q=80',
   'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=600&q=80',
   'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80',
@@ -31,7 +32,9 @@ const WOMEN_PHOTOS = [
   'assets/images/women_jacket.jpg',
   'assets/images/women_hoodie.jpg',
   'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=600&q=80',
   'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=600&q=80',
   'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80',
   'https://images.unsplash.com/photo-1564257631407-4deb1f99d992?auto=format&fit=crop&w=600&q=80',
@@ -151,8 +154,8 @@ const BASE_PRODUCTS = [
     stock: 4,
     colors: ['#4e342e', '#212121', '#9e9e9e'],
     sizes: ['S', 'M', 'L'],
-    image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=600&q=80',
-    gallery: ['https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=600&q=80'],
+    image: 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=600&q=80',
+    gallery: ['https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=600&q=80'],
     description: 'Corte recto con solapa entallada y cinturón ajustable. Elaborado con mezcla de lana melange de tonos cálidos y acabado aterciopelado.'
   },
   {
