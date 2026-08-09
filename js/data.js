@@ -1,10 +1,11 @@
 // ==========================================================================
-// AURA ATELIER - PRODUCT CATALOG DATABASE (600+ UNIQUE STYLED ITEMS)
+// AURA ATELIER - PRODUCT CATALOG DATABASE (STRICT GENDER FILTERING)
 // ==========================================================================
 
 const MEN_PHOTOS = [
   'assets/images/jacket.jpg',
   'assets/images/hoodie.jpg',
+  'assets/images/coat.jpg',
   'assets/images/men_suit.jpg',
   'assets/images/men_shirt.jpg',
   'assets/images/men_trousers.jpg',
@@ -27,7 +28,6 @@ const MEN_PHOTOS = [
 
 const WOMEN_PHOTOS = [
   'assets/images/dress.jpg',
-  'assets/images/coat.jpg',
   'assets/images/women_jacket.jpg',
   'assets/images/women_hoodie.jpg',
   'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=600&q=80',
@@ -151,8 +151,8 @@ const BASE_PRODUCTS = [
     stock: 4,
     colors: ['#4e342e', '#212121', '#9e9e9e'],
     sizes: ['S', 'M', 'L'],
-    image: 'assets/images/coat.jpg',
-    gallery: ['assets/images/coat.jpg'],
+    image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=600&q=80',
+    gallery: ['https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=600&q=80'],
     description: 'Corte recto con solapa entallada y cinturón ajustable. Elaborado con mezcla de lana melange de tonos cálidos y acabado aterciopelado.'
   },
   {
