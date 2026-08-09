@@ -1,5 +1,5 @@
 // ==========================================================================
-// AURA ATELIER - QUICK VIEW MODAL UI (INTERACTIVE COLOR & SIZE SELECTOR)
+// AURA ATELIER - QUICK VIEW MODAL UI (CLOTHING COLOR & SIZE TRANSFORM EFFECTS)
 // ==========================================================================
 
 import { PRODUCTS } from '../data.js';
@@ -26,6 +26,15 @@ const COLOR_NAMES = {
   '#c0c0c0': 'Plata Metalizado'
 };
 
+const SIZE_SCALES = {
+  'XS': 0.88,
+  'S': 0.94,
+  'M': 1.0,
+  'L': 1.08,
+  'XL': 1.16,
+  'XXL': 1.24
+};
+
 export function initModal() {
   const modalOverlay = document.getElementById('quickview-modal');
   const modalCloseBtn = document.getElementById('modal-close-btn');
@@ -44,6 +53,42 @@ export function initModal() {
       closeQuickView();
     }
   });
+}
+
+function updateImageEffects(modalImg, colorHex, sizeStr) {
+  if (!modalImg) return;
+
+  const scaleVal = SIZE_SCALES[sizeStr] || 1.0;
+  modalImg.style.transform = `scale(${scaleVal})`;
+
+  // Apply color filter tint
+  if (!colorHex || colorHex === '#121212' || colorHex === '#1a1a1a') {
+    modalImg.style.filter = 'contrast(1.08) brightness(0.95)';
+  } else if (colorHex === '#4a3728' || colorHex === '#5c4033') {
+    modalImg.style.filter = 'sepia(0.8) hue-rotate(-25deg) saturate(1.8) contrast(1.1)';
+  } else if (colorHex === '#808080' || colorHex === '#2b2b2b' || colorHex === '#c0c0c0') {
+    modalImg.style.filter = 'grayscale(0.9) contrast(1.2) brightness(1.1)';
+  } else if (colorHex === '#ffffff') {
+    modalImg.style.filter = 'brightness(1.4) contrast(0.85) grayscale(0.4)';
+  } else if (colorHex === '#1e3a8a' || colorHex === '#708090') {
+    modalImg.style.filter = 'hue-rotate(185deg) saturate(2.2) brightness(0.95)';
+  } else if (colorHex === '#8b0000') {
+    modalImg.style.filter = 'hue-rotate(330deg) saturate(2.8) contrast(1.15)';
+  } else if (colorHex === '#d4af37') {
+    modalImg.style.filter = 'sepia(0.95) hue-rotate(10deg) saturate(3) brightness(1.1)';
+  } else if (colorHex === '#355e3b') {
+    modalImg.style.filter = 'hue-rotate(90deg) saturate(2) brightness(0.9)';
+  } else {
+    modalImg.style.filter = 'brightness(0.9)';
+  }
+
+  // Update badge preview text
+  const badgeText = document.getElementById('modal-preview-badge-text');
+  if (badgeText) {
+    const colorName = COLOR_NAMES[colorHex] || 'Personalizado';
+    const fitLabel = scaleVal < 1 ? 'Reducido' : (scaleVal > 1 ? 'Agrandado' : 'Estándar');
+    badgeText.textContent = `Talla: ${sizeStr} (${fitLabel}) | Color: ${colorName}`;
+  }
 }
 
 export function openQuickView(productId) {
@@ -69,7 +114,6 @@ export function openQuickView(productId) {
   if (modalImg) {
     modalImg.src = product.image;
     modalImg.alt = product.name;
-    modalImg.style.filter = 'none';
   }
   if (modalCategory) modalCategory.textContent = product.category.toUpperCase();
   if (modalTitle) modalTitle.textContent = product.name;
@@ -83,13 +127,15 @@ export function openQuickView(productId) {
   
   if (modalDesc) modalDesc.textContent = product.description;
 
-  // Set initial labels
+  // Set initial labels & effects
   if (selectedColorLabel) {
     selectedColorLabel.textContent = COLOR_NAMES[selectedColor] || selectedColor;
   }
   if (selectedSizeLabel) {
     selectedSizeLabel.textContent = selectedSize;
   }
+
+  updateImageEffects(modalImg, selectedColor, selectedSize);
 
   // Render Colors
   if (modalColorsContainer && product.colors) {
@@ -100,7 +146,7 @@ export function openQuickView(productId) {
       `;
     }).join('');
 
-    modalColorsContainer.querySelectorAll('.color-swatch').forEach((btn, index) => {
+    modalColorsContainer.querySelectorAll('.color-swatch').forEach((btn) => {
       btn.addEventListener('click', () => {
         modalColorsContainer.querySelectorAll('.color-swatch').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
@@ -110,24 +156,7 @@ export function openQuickView(productId) {
           selectedColorLabel.textContent = btn.dataset.name || COLOR_NAMES[selectedColor] || selectedColor;
         }
 
-        // Apply visual tint shift to product image depending on color
-        if (modalImg) {
-          if (index === 0) {
-            modalImg.style.filter = 'none';
-          } else if (selectedColor === '#4a3728' || selectedColor === '#5c4033') {
-            modalImg.style.filter = 'sepia(0.35) contrast(1.05) saturate(1.2)';
-          } else if (selectedColor === '#808080' || selectedColor === '#2b2b2b' || selectedColor === '#c0c0c0') {
-            modalImg.style.filter = 'grayscale(0.4) brightness(0.95)';
-          } else if (selectedColor === '#1e3a8a') {
-            modalImg.style.filter = 'hue-rotate(180deg) saturate(1.1)';
-          } else if (selectedColor === '#8b0000') {
-            modalImg.style.filter = 'hue-rotate(320deg) saturate(1.3)';
-          } else if (selectedColor === '#d4af37') {
-            modalImg.style.filter = 'sepia(0.6) saturate(2) hue-rotate(5deg)';
-          } else {
-            modalImg.style.filter = 'brightness(0.9)';
-          }
-        }
+        updateImageEffects(modalImg, selectedColor, selectedSize);
       });
     });
   }
@@ -147,6 +176,8 @@ export function openQuickView(productId) {
         if (selectedSizeLabel) {
           selectedSizeLabel.textContent = selectedSize;
         }
+
+        updateImageEffects(modalImg, selectedColor, selectedSize);
       });
     });
   }
