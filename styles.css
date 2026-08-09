@@ -508,6 +508,19 @@ img {
   border-color: var(--color-accent);
 }
 
+.stylist-gender-btn {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  border-radius: var(--radius-sm);
+}
+
+.stylist-gender-btn.active {
+  background-color: var(--color-accent);
+  color: #000000;
+  border-color: var(--color-accent);
+}
+
 .toolbar-grid {
   display: grid;
   grid-template-columns: 1fr 220px 200px;

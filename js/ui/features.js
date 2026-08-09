@@ -53,13 +53,18 @@ function initAiStylist() {
   const overlay = document.getElementById('stylist-overlay');
   const closeBtn = document.getElementById('close-stylist-btn');
   const outfitContainer = document.getElementById('stylist-outfit-container');
+  const headingEl = document.getElementById('stylist-combo-heading');
 
   if (!fab || !drawer || !outfitContainer) return;
+
+  let currentOccasion = 'cita';
+  let currentGender = 'todos';
+  let currentDisplayLimit = 20;
 
   fab.addEventListener('click', () => {
     overlay.classList.add('open');
     drawer.classList.add('open');
-    renderOutfit('cita');
+    renderStylistOutfits();
   });
 
   if (closeBtn) {
@@ -82,56 +87,172 @@ function initAiStylist() {
     btn.addEventListener('click', () => {
       occasionBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      renderOutfit(btn.dataset.occasion);
+      currentOccasion = btn.dataset.occasion;
+      currentDisplayLimit = 20;
+      renderStylistOutfits();
     });
   });
 
-  function renderOutfit(occasion) {
-    let items = [];
+  // Gender Selector
+  const genderBtns = document.querySelectorAll('.stylist-gender-btn');
+  genderBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      genderBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentGender = btn.dataset.gender;
+      currentDisplayLimit = 20;
+      renderStylistOutfits();
+    });
+  });
+
+  function getOutfitsForOccasion(occasion) {
+    const menProducts = PRODUCTS.filter(p => p.category === 'hombres');
+    const womenProducts = PRODUCTS.filter(p => p.category === 'mujeres');
+    const accProducts = PRODUCTS.filter(p => p.category === 'accesorios');
+
+    const outfits = [];
+
     if (occasion === 'cita') {
-      items = [PRODUCTS[0], PRODUCTS[3]]; // Jacket + Sneakers
-    } else if (occasion === 'noche') {
-      items = [PRODUCTS[1], PRODUCTS[5]]; // Silk dress + Handbag
-    } else if (occasion === 'festival') {
-      items = [PRODUCTS[2], PRODUCTS[3]]; // Hoodie + Sneakers
+      const menTitles = [
+        'Cena Romántica en Terraza Elegante',
+        'Cita de Noche en Club Privado',
+        'Paseo Nocturno & Cóctel VIP',
+        'Velada Formal de Alta Costura',
+        'Cita Romántica Minimalista'
+      ];
+      const womenTitles = [
+        'Cena Sensual a la Luz de las Velas',
+        'Noche de Ópera & Cócteles de Lujo',
+        'Cita Romántica Chic Satinada',
+        'Paseo Elegante de Gala Nocturna',
+        'Cita Romántica Glamour Velvet'
+      ];
+
+      // 150 Men Romantic Date Combos
+      for (let i = 0; i < 150; i++) {
+        const p1 = menProducts[i % menProducts.length];
+        const p2 = accProducts[i % accProducts.length];
+        const numStr = i < 9 ? `00${i + 1}` : (i < 99 ? `0${i + 1}` : `${i + 1}`);
+        outfits.push({
+          id: `combo-men-cita-${i + 1}`,
+          title: `Look Cita Romántica ♂ N°${numStr} (${menTitles[i % menTitles.length]})`,
+          gender: 'hombres',
+          badgeText: '♂ Hombre',
+          items: [p1, p2]
+        });
+      }
+
+      // 150 Women Romantic Date Combos
+      for (let i = 0; i < 150; i++) {
+        const p1 = womenProducts[i % womenProducts.length];
+        const p2 = accProducts[(i + 4) % accProducts.length];
+        const numStr = i < 9 ? `00${i + 1}` : (i < 99 ? `0${i + 1}` : `${i + 1}`);
+        outfits.push({
+          id: `combo-women-cita-${i + 1}`,
+          title: `Look Cita Romántica ♀ N°${numStr} (${womenTitles[i % womenTitles.length]})`,
+          gender: 'mujeres',
+          badgeText: '♀ Mujer',
+          items: [p1, p2]
+        });
+      }
     } else {
-      items = [PRODUCTS[4], PRODUCTS[5]]; // Wool coat + Handbag
+      // 50 Combos for other occasions
+      for (let i = 0; i < 50; i++) {
+        const p1 = (i % 2 === 0) ? menProducts[i % menProducts.length] : womenProducts[i % womenProducts.length];
+        const p2 = accProducts[i % accProducts.length];
+        const gender = p1.category;
+        outfits.push({
+          id: `combo-${occasion}-${i + 1}`,
+          title: `Outfit ${occasion.toUpperCase()} N°${i + 1}`,
+          gender: gender,
+          badgeText: gender === 'hombres' ? '♂ Hombre' : '♀ Mujer',
+          items: [p1, p2]
+        });
+      }
     }
 
-    const totalComboPrice = items.reduce((sum, i) => sum + i.price, 0);
+    return outfits;
+  }
 
-    outfitContainer.innerHTML = `
-      <div class="stylist-outfit-box">
-        <div class="outfit-items-flex">
-          ${items.map(item => `
-            <div class="outfit-item-card">
-              <img src="${item.image}" alt="${item.name}">
-              <div>
-                <h5>${item.name}</h5>
-                <span class="outfit-price">$${item.price.toFixed(2)}</span>
+  function renderStylistOutfits() {
+    let allOutfits = getOutfitsForOccasion(currentOccasion);
+
+    if (currentGender !== 'todos') {
+      allOutfits = allOutfits.filter(o => o.gender === currentGender);
+    }
+
+    if (headingEl) {
+      const occasionText = currentOccasion === 'cita' ? 'Cita Romántica' : currentOccasion;
+      headingEl.textContent = `Outfits Recomendados en Combo (${allOutfits.length} Looks ${occasionText})`;
+    }
+
+    const visibleOutfits = allOutfits.slice(0, currentDisplayLimit);
+
+    outfitContainer.innerHTML = visibleOutfits.map(combo => {
+      const totalComboPrice = combo.items.reduce((sum, item) => sum + item.price, 0);
+      const itemIdsJson = JSON.stringify(combo.items.map(item => item.id));
+
+      return `
+        <div class="stylist-outfit-box" style="margin-bottom: 20px; padding: 18px; background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h5 style="font-size: 0.95rem; margin: 0; color: #ffffff;">${combo.title}</h5>
+            <span class="product-category" style="background: rgba(212,175,55,0.15); color: var(--color-accent); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">${combo.badgeText}</span>
+          </div>
+
+          <div class="outfit-items-flex" style="display: flex; flex-direction: column; gap: 10px;">
+            ${combo.items.map(item => `
+              <div class="outfit-item-card" style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.03); padding: 8px; border-radius: 6px;">
+                <img src="${item.image}" alt="${item.name}" style="width: 50px; height: 60px; object-fit: cover; border-radius: 4px;">
+                <div style="flex: 1;">
+                  <h6 style="margin: 0; font-size: 0.85rem; color: #ffffff;">${item.name}</h6>
+                  <span class="outfit-price" style="font-size: 0.8rem; color: var(--color-accent);">$${item.price.toFixed(2)}</span>
+                </div>
               </div>
-            </div>
-          `).join('')}
-        </div>
-        <div class="outfit-total-row" style="margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-          <span>Precio Outfit Completo:</span>
-          <strong style="color: var(--color-accent); font-size: 1.2rem;">$${totalComboPrice.toFixed(2)}</strong>
-        </div>
-        <button id="buy-outfit-btn" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 16px;">
-          <i class="fas fa-shopping-bag"></i> Agregar Outfit Completo
-        </button>
-      </div>
-    `;
+            `).join('')}
+          </div>
 
-    const buyOutfitBtn = document.getElementById('buy-outfit-btn');
-    if (buyOutfitBtn) {
-      buyOutfitBtn.addEventListener('click', () => {
-        items.forEach(item => store.addToCart(item.id));
-        showToast('¡Outfit completo agregado al carrito!', 'success');
-        overlay.classList.remove('open');
-        drawer.classList.remove('open');
-      });
+          <div class="outfit-total-row" style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--color-border); display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.85rem; color: var(--color-text-muted);">Precio Outfit Completo:</span>
+            <strong style="color: var(--color-accent); font-size: 1.1rem;">$${totalComboPrice.toFixed(2)}</strong>
+          </div>
+
+          <button class="btn-primary buy-combo-btn" data-items='${itemIdsJson}' style="width: 100%; justify-content: center; margin-top: 12px; padding: 10px; font-size: 0.85rem;">
+            <i class="fas fa-shopping-bag"></i> Agregar Outfit Completo
+          </button>
+        </div>
+      `;
+    }).join('');
+
+    if (visibleOutfits.length < allOutfits.length) {
+      outfitContainer.innerHTML += `
+        <button id="load-more-combos-btn" class="btn-secondary" style="width: 100%; justify-content: center; margin-top: 16px; padding: 12px;">
+          Cargar Más Looks (${allOutfits.length - visibleOutfits.length} restantes)
+        </button>
+      `;
+
+      const loadMoreBtn = document.getElementById('load-more-combos-btn');
+      if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', () => {
+          currentDisplayLimit += 20;
+          renderStylistOutfits();
+        });
+      }
     }
+
+    // Attach click listener for Buy Combo buttons
+    outfitContainer.querySelectorAll('.buy-combo-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        try {
+          const itemIds = JSON.parse(btn.dataset.items);
+          itemIds.forEach(id => store.addToCart(id));
+          showToast('¡Outfit completo de Cita Romántica agregado al carrito!', 'success');
+          overlay.classList.remove('open');
+          drawer.classList.remove('open');
+        } catch (e) {
+          console.error(e);
+        }
+      });
+    });
   }
 }
 
