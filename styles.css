@@ -2474,6 +2474,64 @@ img {
   }
 }
 
+/* ==========================================================================
+   PANEL Q&A ACCORDION STYLES
+   ========================================================================== */
+.panel-faq-list {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.panel-faq-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: var(--transition-fast);
+}
+
+.panel-faq-question {
+  width: 100%;
+  padding: 14px 18px;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  cursor: pointer;
+}
+
+.panel-faq-question i {
+  color: var(--color-accent);
+  transition: transform var(--transition-fast);
+}
+
+.panel-faq-item.open .panel-faq-question i {
+  transform: rotate(180deg);
+}
+
+.panel-faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  padding: 0 18px;
+  color: #9ca3af;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.panel-faq-item.open .panel-faq-answer {
+  max-height: 200px;
+  padding: 0 18px 16px 18px;
+}
+
+
 
 
 

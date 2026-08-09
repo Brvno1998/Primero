@@ -1,5 +1,5 @@
 // ==========================================================================
-// AURA ATELIER - FOOTER PANELS & INTERACTIVE MODAL UTILITIES
+// AURA ATELIER - FOOTER INTERACTIVE PANELS & Q&A MODULE
 // ==========================================================================
 
 import { showToast } from './toast.js';
@@ -14,7 +14,7 @@ export function initFooterPanels() {
 
   if (!modal || !bodyEl) return;
 
-  // Intercept feature cards in footer showcase
+  // Feature cards showcase click listener
   const featureCards = document.querySelectorAll('.footer-feature-card');
   featureCards.forEach(card => {
     card.addEventListener('click', () => {
@@ -76,7 +76,7 @@ export function initFooterPanels() {
       const href = link.getAttribute('href');
       const text = link.textContent.trim().toLowerCase();
 
-      // If it's a internal section jump to catalog or hero, handle smoothly
+      // Catalog category jump
       if (href.startsWith('#catalog')) {
         e.preventDefault();
         const catalogSection = document.getElementById('catalog');
@@ -84,7 +84,6 @@ export function initFooterPanels() {
           catalogSection.scrollIntoView({ behavior: 'smooth' });
         }
         
-        // Trigger tab click if text matches
         if (text.includes('hombre')) triggerCategory('hombres');
         else if (text.includes('mujer')) triggerCategory('mujeres');
         else if (text.includes('accesorio')) triggerCategory('accesorios');
@@ -93,36 +92,27 @@ export function initFooterPanels() {
         return;
       }
 
-      if (href === '#hero') return; // default anchor
+      if (href === '#hero') return;
 
-      // Otherwise open interactive modal panel
       e.preventDefault();
 
-      if (text.includes('guía de talla') || text.includes('talla')) {
-        openSizeGuidePanel();
-      } else if (text.includes('envío') || text.includes('entrega')) {
-        openShippingPanel();
-      } else if (text.includes('devolucion') || text.includes('cambio') || text.includes('devoluciones')) {
-        openReturnsPanel();
-      } else if (text.includes('estado de mi pedido') || text.includes('pedido') || text.includes('rastreo')) {
-        openOrderTrackingPanel();
-      } else if (text.includes('sostenibilidad') || text.includes('tejidos') || text.includes('materiales')) {
-        openSustainabilityPanel();
-      } else if (text.includes('cuidado') || text.includes('prendas')) {
-        openCarePanel();
-      } else if (text.includes('vip') || text.includes('beneficios')) {
-        openVipPanel();
-      } else if (text.includes('comunidad') || text.includes('lookbook')) {
-        openCommunityPanel();
-      } else if (text.includes('pregunta') || text.includes('faq')) {
-        openFaqPanel();
-      } else {
-        openGenericInfoPanel(link.textContent.trim());
-      }
+      if (text.includes('guía de talla') || text.includes('talla')) openSizeGuidePanel();
+      else if (text.includes('envío') || text.includes('entrega')) openShippingPanel();
+      else if (text.includes('devolucion') || text.includes('cambio') || text.includes('devoluciones')) openReturnsPanel();
+      else if (text.includes('estado de mi pedido') || text.includes('pedido') || text.includes('rastreo')) openOrderTrackingPanel();
+      else if (text.includes('sostenibilidad') || text.includes('tejidos') || text.includes('materiales')) openSustainabilityPanel();
+      else if (text.includes('cuidado') || text.includes('prendas')) openCarePanel();
+      else if (text.includes('vip') || text.includes('beneficios')) openVipPanel();
+      else if (text.includes('comunidad') || text.includes('lookbook')) openCommunityPanel();
+      else if (text.includes('pregunta') || text.includes('faq')) openFaqPanel();
+      else if (text.includes('privacidad')) openLegalPrivacyPanel();
+      else if (text.includes('términos') || text.includes('condiciones')) openTermsPanel();
+      else if (text.includes('cookie')) openCookiesPanel();
+      else openGenericInfoPanel(link.textContent.trim());
     });
   });
 
-  // Close modal listeners
+  // Modal Close Listeners
   if (closeBtn) {
     closeBtn.addEventListener('click', () => {
       modal.classList.remove('open');
@@ -135,9 +125,22 @@ export function initFooterPanels() {
     }
   });
 
-  // ------------------------------------------------------------------------
-  // PANEL RENDERERS
-  // ------------------------------------------------------------------------
+  // Helper to bind accordion behavior inside modal Q&A
+  function bindModalAccordion() {
+    const questions = bodyEl.querySelectorAll('.panel-faq-question');
+    questions.forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.closest('.panel-faq-item');
+        const isOpen = item.classList.contains('open');
+        bodyEl.querySelectorAll('.panel-faq-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+  }
+
+  // ==========================================================================
+  // PANEL RENDERERS WITH RICH Q&A CONTENT
+  // ==========================================================================
 
   function openSizeGuidePanel() {
     titleEl.textContent = 'Guía de Tallas & Medidas';
@@ -146,15 +149,15 @@ export function initFooterPanels() {
 
     bodyEl.innerHTML = `
       <div class="panel-hero-img">
-        <img src="assets/images/size_guide.jpg" alt="Guía de Tallas AURA Atelier">
+        <img src="assets/images/size_guide.jpg" alt="Guía de Tallas AURA">
       </div>
 
       <p class="panel-lead">
-        Nuestras prendas están confeccionadas siguiendo patrones europeos de alta costura. Utiliza esta guía interactiva para medir tu cuerpo correctamente.
+        Nuestras prendas siguen patrones europeos de alta costura. Utiliza nuestra herramienta corporal o consulta la tabla de medidas.
       </p>
 
       <div class="size-calculator-box">
-        <h4><i class="fas fa-calculator"></i> Calculadora Rápida de Talla</h4>
+        <h4><i class="fas fa-calculator"></i> Calculadora Corporal Rápida</h4>
         <div class="calc-inputs">
           <div class="calc-group">
             <label>Pecho / Busto (cm):</label>
@@ -165,11 +168,11 @@ export function initFooterPanels() {
             <input type="number" id="calc-waist" placeholder="Ej. 80" min="50" max="140">
           </div>
         </div>
-        <button id="calc-size-btn" class="btn-primary style="width: 100%; margin-top: 12px;">Calcular Mi Talla</button>
+        <button id="calc-size-btn" class="btn-primary" style="width: 100%; margin-top: 14px;">Calcular Mi Talla</button>
         <div id="calc-result" class="calc-result" style="display: none;"></div>
       </div>
 
-      <h4 class="panel-section-title">Tabla de Medidas Generales (cm)</h4>
+      <h4 class="panel-section-title">Tabla de Medidas Internacionales (cm)</h4>
       <div class="table-responsive">
         <table class="panel-table">
           <thead>
@@ -188,11 +191,33 @@ export function initFooterPanels() {
           </tbody>
         </table>
       </div>
+
+      <h4 class="panel-section-title"><i class="fas fa-question-circle" style="color: var(--color-accent);"></i> Preguntas Frecuentes de Tallas (Q&A)</h4>
+      <div class="panel-faq-list">
+        <div class="panel-faq-item open">
+          <button class="panel-faq-question">
+            <span>¿Qué ocurre si estoy entre dos tallas?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="panel-faq-answer">
+            <p>Recomendamos elegir la talla superior si prefieres un estilo relajado o la talla menor si buscas un corte entallado al cuerpo.</p>
+          </div>
+        </div>
+        <div class="panel-faq-item">
+          <button class="panel-faq-question">
+            <span>¿Las prendas encogen al lavarse?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="panel-faq-answer">
+            <p>Todas nuestras prendas de algodón orgánico y seda están prelavadas térmicamente para mantener exactamente su dimensión original.</p>
+          </div>
+        </div>
+      </div>
     `;
 
     modal.classList.add('open');
+    bindModalAccordion();
 
-    // Attach calculator logic
     const calcBtn = document.getElementById('calc-size-btn');
     const resultDiv = document.getElementById('calc-result');
     if (calcBtn && resultDiv) {
@@ -202,14 +227,14 @@ export function initFooterPanels() {
           showToast('Ingresa la medida de tu pecho en centímetros', 'info');
           return;
         }
-        let recommendedSize = 'M';
-        if (chest < 94) recommendedSize = 'S';
-        else if (chest <= 102) recommendedSize = 'M';
-        else if (chest <= 110) recommendedSize = 'L';
-        else recommendedSize = 'XL';
+        let size = 'M';
+        if (chest < 94) size = 'S';
+        else if (chest <= 102) size = 'M';
+        else if (chest <= 110) size = 'L';
+        else size = 'XL';
 
         resultDiv.style.display = 'block';
-        resultDiv.innerHTML = `<i class="fas fa-check-circle" style="color: var(--color-accent);"></i> Tu talla recomendada es: <strong>${recommendedSize}</strong>`;
+        resultDiv.innerHTML = `<i class="fas fa-check-circle" style="color: var(--color-accent);"></i> Talla recomendada: <strong>${size}</strong>`;
       });
     }
   }
@@ -221,14 +246,14 @@ export function initFooterPanels() {
 
     bodyEl.innerHTML = `
       <div class="panel-hero-img">
-        <img src="assets/images/shipping_info.jpg" alt="Envíos Express AURA Atelier">
+        <img src="assets/images/shipping_info.jpg" alt="Envíos Express AURA">
       </div>
 
       <div class="shipping-features-grid">
         <div class="shipping-box">
           <i class="fas fa-bolt"></i>
           <h5>Envío Express 24h</h5>
-          <p>Gratis en pedidos superiores a $150. Entregado en caja rígida con lazo distintivo.</p>
+          <p>Gratis en compras superiores a $150. Entregado en caja rígida protegida.</p>
         </div>
         <div class="shipping-box">
           <i class="fas fa-globe"></i>
@@ -237,48 +262,57 @@ export function initFooterPanels() {
         </div>
       </div>
 
-      <h4 class="panel-section-title">Calculador Estimado de Envío</h4>
+      <h4 class="panel-section-title">Estimador de Tarifas por País</h4>
       <div class="form-group">
-        <label>Selecciona tu Destino:</label>
         <select id="shipping-dest-select" class="panel-select">
-          <option value="es">España (Península y Baleares) - 24 Horas (GRATIS > $150)</option>
-          <option value="eu">Unión Europea - 48/72 Horas ($9.99)</option>
-          <option value="am">América (EE.UU., México, Colombia, Argentina) - 3/5 Días ($14.99)</option>
-          <option value="row">Resto del Mundo - 4/7 Días ($19.99)</option>
+          <option value="es">España (24h) - GRATIS > $150</option>
+          <option value="eu">Unión Europea (48/72h) - $9.99</option>
+          <option value="am">América (EE.UU., México, Argentina) - 3/5 Días ($14.99)</option>
         </select>
       </div>
       <div id="shipping-dest-info" class="dest-info-box">
-        <i class="fas fa-info-circle"></i> Envío peninsular en 24h hábiles. Seguimiento satelital en tiempo real habilitado.
+        <i class="fas fa-check-circle"></i> Entrega en 24h hábiles con código de rastreo en vivo.
+      </div>
+
+      <h4 class="panel-section-title"><i class="fas fa-question-circle" style="color: var(--color-accent);"></i> Preguntas Frecuentes de Envíos (Q&A)</h4>
+      <div class="panel-faq-list">
+        <div class="panel-faq-item open">
+          <button class="panel-faq-question">
+            <span>¿Se requiere firma en la entrega?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="panel-faq-answer">
+            <p>Sí. Para garantizar la seguridad del paquete, el mensajero solicitará firma o código PIN de entrega.</p>
+          </div>
+        </div>
+        <div class="panel-faq-item">
+          <button class="panel-faq-question">
+            <span>¿Tienen gastos de aduana ocultos?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="panel-faq-answer">
+            <p>Todos los impuestos de aduana e IVA están incluidos en el precio final de tu carrito al pagar.</p>
+          </div>
+        </div>
       </div>
     `;
 
     modal.classList.add('open');
-
-    const select = document.getElementById('shipping-dest-select');
-    const infoBox = document.getElementById('shipping-dest-info');
-    if (select && infoBox) {
-      select.addEventListener('change', (e) => {
-        const val = e.target.value;
-        if (val === 'es') infoBox.innerHTML = '<i class="fas fa-check-circle"></i> <strong>España:</strong> Entrega en 24h hábiles. Gratis si tu pedido supera $150.';
-        else if (val === 'eu') infoBox.innerHTML = '<i class="fas fa-truck"></i> <strong>Unión Europea:</strong> Entrega en 48-72h. Tarifa plana $9.99.';
-        else if (val === 'am') infoBox.innerHTML = '<i class="fas fa-plane"></i> <strong>América:</strong> DHL Express Prioritario 3-5 días. Rastreo aduanero directo.';
-        else infoBox.innerHTML = '<i class="fas fa-globe"></i> <strong>Internacional:</strong> Cobertura global garantizada en 4-7 días.';
-      });
-    }
+    bindModalAccordion();
   }
 
   function openReturnsPanel() {
-    titleEl.textContent = 'Cambios y Devoluciones';
-    subtitleEl.textContent = 'Garantía 100% Satisfacción Sin Preguntas';
+    titleEl.textContent = 'Garantía & Devoluciones (30 Días)';
+    subtitleEl.textContent = 'Cambios sin preguntas ni costes';
     iconEl.innerHTML = '<i class="fas fa-box-open"></i>';
 
     bodyEl.innerHTML = `
       <div class="panel-hero-img">
-        <img src="assets/images/returns_info.jpg" alt="Devoluciones Gratuitas AURA">
+        <img src="assets/images/returns_info.jpg" alt="Devoluciones AURA">
       </div>
 
       <p class="panel-lead">
-        Queremos que ames cada prenda AURA. Si la talla no es la adecuada o prefieres cambiar de estilo, dispones de <strong>30 días naturales</strong> desde la recepción.
+        Si tu prenda no es de tu agrado o requieres cambio de talla, dispones de 30 días naturales sin costo adicional.
       </p>
 
       <div class="returns-steps-list">
@@ -286,108 +320,97 @@ export function initFooterPanels() {
           <span class="step-num">1</span>
           <div>
             <h5>Solicita la Devolución</h5>
-            <p>Accede con tu número de pedido y correo. Generaremos tu etiqueta prepagada al instante.</p>
+            <p>Generamos tu etiqueta de transporte prepagada en menos de 1 minuto.</p>
           </div>
         </div>
         <div class="step-card">
           <span class="step-num">2</span>
           <div>
-            <h5>Empaca y Entrega</h5>
-            <p>Coloca la prenda en su embalaje original y entrega la caja en cualquier punto de recogida autorizado.</p>
+            <h5>Empaca la Prenda</h5>
+            <p>Guárdala en su caja original y programa el retiro gratis en tu domicilio.</p>
           </div>
         </div>
         <div class="step-card">
           <span class="step-num">3</span>
           <div>
-            <h5>Reembolso Inmediato</h5>
-            <p>Inspeccionamos el producto en 24h y abonamos el 100% de tu dinero en tu tarjeta o método original.</p>
+            <h5>Reembolso en 24h</h5>
+            <p>Tras la recepción del paquete abonamos el 100% de tu dinero inmediatamente.</p>
           </div>
         </div>
       </div>
 
-      <button id="start-return-btn" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 20px;">
-        <i class="fas fa-undo"></i> Iniciar Solicitud de Devolución
-      </button>
+      <h4 class="panel-section-title"><i class="fas fa-question-circle" style="color: var(--color-accent);"></i> Preguntas Frecuentes de Devoluciones (Q&A)</h4>
+      <div class="panel-faq-list">
+        <div class="panel-faq-item open">
+          <button class="panel-faq-question">
+            <span>¿Puedo devolver un producto comprado en oferta?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="panel-faq-answer">
+            <p>Sí, las prendas en promoción u ofertas especiales aplican exactamente con la misma garantía de 30 días.</p>
+          </div>
+        </div>
+      </div>
     `;
 
     modal.classList.add('open');
-
-    const returnBtn = document.getElementById('start-return-btn');
-    if (returnBtn) {
-      returnBtn.addEventListener('click', () => {
-        showToast('Abriendo portal de devoluciones. Ingresa tu # de orden', 'info');
-        modal.classList.remove('open');
-        openOrderTrackingPanel();
-      });
-    }
+    bindModalAccordion();
   }
 
   function openOrderTrackingPanel() {
     titleEl.textContent = 'Rastreo de Pedido en Vivo';
-    subtitleEl.textContent = 'Consulta el estado de tu paquete';
+    subtitleEl.textContent = 'Seguimiento Satelital en Tiempo Real';
     iconEl.innerHTML = '<i class="fas fa-location-dot"></i>';
 
     bodyEl.innerHTML = `
       <div class="panel-hero-img">
-        <img src="assets/images/tracking_info.jpg" alt="Seguimiento de Pedido AURA">
+        <img src="assets/images/tracking_info.jpg" alt="Rastreo AURA">
       </div>
 
-      <form id="track-order-form" class="track-form">
+      <form id="track-order-form">
         <div class="form-group">
-          <label>Número de Pedido o Código de Rastreo:</label>
+          <label>Número de Pedido o Código de Envío:</label>
           <div class="search-input-group" style="width: 100%;">
             <i class="fas fa-barcode"></i>
-            <input type="text" id="track-id-input" class="search-input" placeholder="Ej: #AURA-98412" value="#AURA-98412" style="width: 100%;" required>
+            <input type="text" id="track-id-input" class="search-input" value="#AURA-98412" style="width: 100%;" required>
           </div>
         </div>
-        <button type="submit" class="btn-primary" style="width: 100%;">
-          <i class="fas fa-search"></i> Buscar Pedido
-        </button>
+        <button type="submit" class="btn-primary" style="width: 100%;">Consultar Rastreo</button>
       </form>
 
-      <div id="track-results" class="track-results-box" style="margin-top: 24px;">
-        <div class="order-status-timeline">
-          <div class="timeline-step completed">
-            <i class="fas fa-check-circle"></i>
-            <div>
-              <strong>Pedido Confirmado</strong>
-              <small>08 de Agosto, 2026 - 14:30</small>
-            </div>
+      <div class="order-status-timeline" style="margin-top: 24px;">
+        <div class="timeline-step completed">
+          <i class="fas fa-check-circle"></i>
+          <div>
+            <strong>Pedido Confirmado & Pago Verificado</strong>
+            <small>AURA Madrid - 14:30h</small>
           </div>
-          <div class="timeline-step completed">
-            <i class="fas fa-box"></i>
-            <div>
-              <strong>Empacado en Almacén Madrid</strong>
-              <small>08 de Agosto, 2026 - 18:00</small>
-            </div>
+        </div>
+        <div class="timeline-step active">
+          <i class="fas fa-truck-fast"></i>
+          <div>
+            <strong>En Tránsito con Courier Express</strong>
+            <small>Entrega estimada: Mañana antes de las 18:00h</small>
           </div>
-          <div class="timeline-step active">
-            <i class="fas fa-truck-fast"></i>
-            <div>
-              <strong>En Tránsito con Courier Express</strong>
-              <small>Estimado de entrega: Mañana antes de las 18:00</small>
-            </div>
-          </div>
-          <div class="timeline-step">
-            <i class="fas fa-house"></i>
-            <div>
-              <strong>Entregado al Cliente</strong>
-              <small>Pendiente de entrega</small>
-            </div>
+        </div>
+      </div>
+
+      <h4 class="panel-section-title"><i class="fas fa-question-circle" style="color: var(--color-accent);"></i> Preguntas de Rastreo (Q&A)</h4>
+      <div class="panel-faq-list">
+        <div class="panel-faq-item open">
+          <button class="panel-faq-question">
+            <span>¿Dónde encuentro mi número de orden?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="panel-faq-answer">
+            <p>Se encuentra en el asunto de tu correo electrónico de confirmación (#AURA-XXXXX) enviado al comprar.</p>
           </div>
         </div>
       </div>
     `;
 
     modal.classList.add('open');
-
-    const trackForm = document.getElementById('track-order-form');
-    if (trackForm) {
-      trackForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        showToast('Actualizando datos de rastreo...', 'info');
-      });
-    }
+    bindModalAccordion();
   }
 
   function openSustainabilityPanel() {
@@ -400,140 +423,181 @@ export function initFooterPanels() {
         <img src="assets/images/sustainability_info.jpg" alt="Sostenibilidad AURA">
       </div>
       <p class="panel-lead">
-        Todas nuestras colecciones se confeccionan con lino certificado, algodón 100% orgánico GOTS y pieles de bajo impacto ambiental procesadas con tintes vegetales.
+        Confeccionamos prendas sustentables utilizando algodón 100% orgánico certificado GOTS y embalajes compostables.
       </p>
-      <div class="shipping-features-grid">
-        <div class="shipping-box">
-          <i class="fas fa-seedling"></i>
-          <h5>Materiales Cero Huella</h5>
-          <p>Algodón orgánico cultivado sin pesticidas sintéticos y con un 80% menos de consumo de agua.</p>
-        </div>
-        <div class="shipping-box">
-          <i class="fas fa-recycle"></i>
-          <h5>Packaging 100% Biodegradable</h5>
-          <p>Embalajes rígidos reutilizables hechos de fibras vegetales y tintas solubles en agua.</p>
+
+      <h4 class="panel-section-title"><i class="fas fa-question-circle" style="color: var(--color-accent);"></i> Preguntas Frecuentes de Sostenibilidad (Q&A)</h4>
+      <div class="panel-faq-list">
+        <div class="panel-faq-item open">
+          <button class="panel-faq-question">
+            <span>¿Sus prendas contienen plásticos o fibras sintéticas?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="panel-faq-answer">
+            <p>Nuestra colección principal es 100% libre de poliéster virgen y utiliza celulosa biodegradable y seda natural.</p>
+          </div>
         </div>
       </div>
     `;
+
     modal.classList.add('open');
+    bindModalAccordion();
   }
 
   function openCarePanel() {
     titleEl.textContent = 'Guía de Cuidado de Prendas';
-    subtitleEl.textContent = 'Preserva la Calidad y Longevidad';
+    subtitleEl.textContent = 'Cuidado de Seda, Cuero y Lana';
     iconEl.innerHTML = '<i class="fas fa-shirt"></i>';
 
     bodyEl.innerHTML = `
       <div class="panel-hero-img">
-        <img src="assets/images/care_info.jpg" alt="Cuidado de Prendas AURA">
+        <img src="assets/images/care_info.jpg" alt="Cuidado AURA">
       </div>
       <p class="panel-lead">
-        Para mantener tus piezas de seda, cuero y lana como el primer día, sigue estas instrucciones especializadas recomendadas por nuestros maestros sastres:
+        Instrucciones especializadas recomendadas por nuestros maestros sastres para alargar la vida útil de tus prendas.
       </p>
-      <div class="returns-steps-list">
-        <div class="step-card">
-          <span class="step-num"><i class="fas fa-droplet"></i></span>
-          <div>
-            <h5>Prendas de Seda y Vestidos</h5>
-            <p>Lavar a mano en agua fría con jabón neutro o limpieza en seco ecológica. Evitar retorcer.</p>
-          </div>
-        </div>
-        <div class="step-card">
-          <span class="step-num"><i class="fas fa-wind"></i></span>
-          <div>
-            <h5>Chaquetas de Cuero Vacuno</h5>
-            <p>Tratar con bálsamo hidratante para cuero 1 vez al año. Guardar en funda transpirable en lugar fresco.</p>
-          </div>
-        </div>
-        <div class="step-card">
-          <span class="step-num"><i class="fas fa-temperature-arrow-down"></i></span>
-          <div>
-            <h5>Abrigos de Lana & Hoodies</h5>
-            <p>Planchado al vapor a baja temperatura. Utilizar perchas anchas para evitar deformar los hombros.</p>
+
+      <h4 class="panel-section-title"><i class="fas fa-question-circle" style="color: var(--color-accent);"></i> Preguntas Frecuentes de Mantenimiento (Q&A)</h4>
+      <div class="panel-faq-list">
+        <div class="panel-faq-item open">
+          <button class="panel-faq-question">
+            <span>¿Cómo limpiar una chaqueta de cuero vacuno?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="panel-faq-answer">
+            <p>Utilizar una bayeta de microfibra ligeramente húmeda y aplicar bálsamo nutritivo para cuero 1 vez al año.</p>
           </div>
         </div>
       </div>
     `;
+
     modal.classList.add('open');
+    bindModalAccordion();
   }
 
   function openVipPanel() {
     titleEl.textContent = 'Club VIP & Recompensas AURA';
-    subtitleEl.textContent = 'Acceso Exclusivo y Privilegios';
+    subtitleEl.textContent = 'Puntos y Accesos Anticipados';
     iconEl.innerHTML = '<i class="fas fa-gem"></i>';
 
     bodyEl.innerHTML = `
       <div class="panel-hero-img">
-        <img src="assets/images/vip_info.jpg" alt="Club VIP AURA Atelier">
+        <img src="assets/images/vip_info.jpg" alt="VIP Club AURA">
       </div>
-      <p class="panel-lead">
-        Como miembro del Club VIP AURA, acumulas puntos con cada compra, obtienes ventas privadas anticipadas y obsequios en tu cumpleaños.
-      </p>
-      <div class="shipping-features-grid">
-        <div class="shipping-box">
-          <i class="fas fa-crown"></i>
-          <h5>Acceso Prioritario 48h</h5>
-          <p>Compra las colecciones de edición limitada antes de que se abran al público general.</p>
-        </div>
-        <div class="shipping-box">
-          <i class="fas fa-gift"></i>
-          <h5>Doble Puntuación</h5>
-          <p>Canjea cada 100 puntos por $10 de descuento en tu siguiente pedido sin mínimo de compra.</p>
+
+      <h4 class="panel-section-title"><i class="fas fa-question-circle" style="color: var(--color-accent);"></i> Preguntas del Club VIP (Q&A)</h4>
+      <div class="panel-faq-list">
+        <div class="panel-faq-item open">
+          <button class="panel-faq-question">
+            <span>¿Los puntos del club tienen vencimiento?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="panel-faq-answer">
+            <p>Tus puntos permanecen activos durante 12 meses continuos y se renuevan automáticamente con cualquier nueva compra.</p>
+          </div>
         </div>
       </div>
     `;
+
     modal.classList.add('open');
+    bindModalAccordion();
   }
 
   function openCommunityPanel() {
     titleEl.textContent = 'Comunidad & Lookbook Editorial';
-    subtitleEl.textContent = 'Inspírate con el Estilo AURA';
+    subtitleEl.textContent = 'Comparte tu estilo #AURAAtelier2026';
     iconEl.innerHTML = '<i class="fas fa-camera-retro"></i>';
 
     bodyEl.innerHTML = `
       <div class="panel-hero-img">
-        <img src="assets/images/community_info.jpg" alt="Comunidad AURA Lookbook">
+        <img src="assets/images/community_info.jpg" alt="Comunidad AURA">
       </div>
-      <p class="panel-lead">
-        Comparte tus mejores outfits en Instagram y TikTok usando el hashtag <strong>#AURAAtelier2026</strong> para aparecer en nuestro Lookbook global mensual.
-      </p>
-      <div class="generic-info-card">
-        <h4><i class="fab fa-instagram"></i> Etiquétanos @auraatelier</h4>
-        <p>Seleccionamos semanalmente las mejores fotos de nuestra comunidad y regalamos una tarjeta regalo de $200 al outfit más votado.</p>
+
+      <h4 class="panel-section-title"><i class="fas fa-question-circle" style="color: var(--color-accent);"></i> Preguntas de Comunidad (Q&A)</h4>
+      <div class="panel-faq-list">
+        <div class="panel-faq-item open">
+          <button class="panel-faq-question">
+            <span>¿Cómo gano la tarjeta regalo mensual de $200?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="panel-faq-answer">
+            <p>Publica una foto o reel luciendo tu outfit AURA con el hashtag #AURAAtelier2026 y etiquetando @auraatelier.</p>
+          </div>
+        </div>
       </div>
     `;
+
     modal.classList.add('open');
+    bindModalAccordion();
   }
 
   function openFaqPanel() {
-    titleEl.textContent = 'Preguntas Frecuentes (FAQ)';
-    subtitleEl.textContent = 'Soporte y Respuestas Rápidas';
+    titleEl.textContent = 'Preguntas Frecuentes Generales (FAQ)';
+    subtitleEl.textContent = 'Centro de Ayuda AURA';
     iconEl.innerHTML = '<i class="fas fa-circle-question"></i>';
 
     bodyEl.innerHTML = `
       <div class="panel-hero-img">
-        <img src="assets/images/faq_info.jpg" alt="Preguntas Frecuentes AURA">
+        <img src="assets/images/faq_info.jpg" alt="FAQ AURA">
       </div>
-      <div class="faq-list-panel">
-        <div class="step-card" style="margin-bottom: 12px;">
-          <div>
-            <h5>¿Cuánto tarda en llegar mi pedido?</h5>
-            <p>Los envíos nacionales se entregan en 24h hábiles. Los envíos internacionales tardan entre 3 y 5 días express.</p>
-          </div>
-        </div>
-        <div class="step-card" style="margin-bottom: 12px;">
-          <div>
-            <h5>¿Puedo cambiar la talla si no me queda?</h5>
-            <p>¡Sí! Dispones de 30 días naturales sin costo adicional. Emitimos una etiqueta de transporte prepagada.</p>
-          </div>
-        </div>
-        <div class="step-card">
-          <div>
-            <h5>¿Qué métodos de pago aceptan?</h5>
-            <p>Aceptamos Visa, Mastercard, American Express, PayPal, Apple Pay y Google Pay con encriptación SSL de 256 bits.</p>
+      <div class="panel-faq-list">
+        <div class="panel-faq-item open">
+          <button class="panel-faq-question">
+            <span>¿Cuáles son los tiempos de entrega nacioanles?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="panel-faq-answer">
+            <p>Los envíos nacionales tardan exactamente 24 horas hábiles desde que el pago es verificado.</p>
           </div>
         </div>
       </div>
+    `;
+
+    modal.classList.add('open');
+    bindModalAccordion();
+  }
+
+  function openLegalPrivacyPanel() {
+    titleEl.textContent = 'Política de Privacidad';
+    subtitleEl.textContent = 'Protección de Datos SSL 256-bit';
+    iconEl.innerHTML = '<i class="fas fa-shield-alt"></i>';
+
+    bodyEl.innerHTML = `
+      <p class="panel-lead">Garantizamos la máxima confidencialidad de tus datos personales conforme al Reglamento General de Protección de Datos (RGPD).</p>
+      <div class="panel-faq-list">
+        <div class="panel-faq-item open">
+          <button class="panel-faq-question">
+            <span>¿Guardan los datos de mi tarjeta de crédito?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="panel-faq-answer">
+            <p>No. Todos los pagos son procesados directamente por pasarelas seguras (Stripe/PayPal) mediante tokens encriptados.</p>
+          </div>
+        </div>
+      </div>
+    `;
+    modal.classList.add('open');
+    bindModalAccordion();
+  }
+
+  function openTermsPanel() {
+    titleEl.textContent = 'Términos y Condiciones de Uso';
+    subtitleEl.textContent = 'Garantía Legal del Comprador';
+    iconEl.innerHTML = '<i class="fas fa-file-contract"></i>';
+
+    bodyEl.innerHTML = `
+      <p class="panel-lead">Todas las compras realizadas en AURA Atelier cuentan con validez legal europea y 2 años de garantía contra defectos de fabricación.</p>
+    `;
+    modal.classList.add('open');
+  }
+
+  function openCookiesPanel() {
+    titleEl.textContent = 'Política de Cookies';
+    subtitleEl.textContent = 'Preferencia de Navegación';
+    iconEl.innerHTML = '<i class="fas fa-cookie-bite"></i>';
+
+    bodyEl.innerHTML = `
+      <p class="panel-lead">Utilizamos cookies técnicas y analíticas esenciales para ofrecerte una experiencia fluida e interactiva.</p>
     `;
     modal.classList.add('open');
   }
@@ -544,14 +608,7 @@ export function initFooterPanels() {
     iconEl.innerHTML = '<i class="fas fa-circle-info"></i>';
 
     bodyEl.innerHTML = `
-      <p class="panel-lead">
-        En <strong>AURA Atelier</strong> nos dedicamos a ofrecer una experiencia de compra de lujo única, transparente y personalizada.
-      </p>
-      <div class="generic-info-card">
-        <h4><i class="fas fa-shield-halved"></i> Compromiso con la Excelencia</h4>
-        <p>Todos nuestros productos cuentan con certificados de autenticidad, producción ética y embalaje 100% reciclable.</p>
-      </div>
-      <p>Para consultas personalizadas sobre <em>${title}</em>, puedes escribirnos directamente a <a href="mailto:contacto@auraatelier.com" style="color: var(--color-accent); font-weight: 700;">contacto@auraatelier.com</a>.</p>
+      <p class="panel-lead">En <strong>AURA Atelier</strong> nos dedicamos a ofrecer una experiencia de compra de lujo única y personalizada.</p>
     `;
 
     modal.classList.add('open');
