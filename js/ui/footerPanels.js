@@ -52,9 +52,16 @@ export function initFooterPanels() {
         openReturnsPanel();
       } else if (text.includes('estado de mi pedido') || text.includes('pedido') || text.includes('rastreo')) {
         openOrderTrackingPanel();
+      } else if (text.includes('sostenibilidad') || text.includes('tejidos') || text.includes('materiales')) {
+        openSustainabilityPanel();
+      } else if (text.includes('cuidado') || text.includes('prendas')) {
+        openCarePanel();
+      } else if (text.includes('vip') || text.includes('beneficios')) {
+        openVipPanel();
+      } else if (text.includes('comunidad') || text.includes('lookbook')) {
+        openCommunityPanel();
       } else if (text.includes('pregunta') || text.includes('faq')) {
-        const faqSec = document.getElementById('faq');
-        if (faqSec) faqSec.scrollIntoView({ behavior: 'smooth' });
+        openFaqPanel();
       } else {
         openGenericInfoPanel(link.textContent.trim());
       }
@@ -327,6 +334,154 @@ export function initFooterPanels() {
         showToast('Actualizando datos de rastreo...', 'info');
       });
     }
+  }
+
+  function openSustainabilityPanel() {
+    titleEl.textContent = 'Sostenibilidad & Tejidos Orgánicos';
+    subtitleEl.textContent = 'Compromiso Ético AURA 2026';
+    iconEl.innerHTML = '<i class="fas fa-leaf"></i>';
+
+    bodyEl.innerHTML = `
+      <div class="panel-hero-img">
+        <img src="assets/images/sustainability_info.jpg" alt="Sostenibilidad AURA">
+      </div>
+      <p class="panel-lead">
+        Todas nuestras colecciones se confeccionan con lino certificado, algodón 100% orgánico GOTS y pieles de bajo impacto ambiental procesadas con tintes vegetales.
+      </p>
+      <div class="shipping-features-grid">
+        <div class="shipping-box">
+          <i class="fas fa-seedling"></i>
+          <h5>Materiales Cero Huella</h5>
+          <p>Algodón orgánico cultivado sin pesticidas sintéticos y con un 80% menos de consumo de agua.</p>
+        </div>
+        <div class="shipping-box">
+          <i class="fas fa-recycle"></i>
+          <h5>Packaging 100% Biodegradable</h5>
+          <p>Embalajes rígidos reutilizables hechos de fibras vegetales y tintas solubles en agua.</p>
+        </div>
+      </div>
+    `;
+    modal.classList.add('open');
+  }
+
+  function openCarePanel() {
+    titleEl.textContent = 'Guía de Cuidado de Prendas';
+    subtitleEl.textContent = 'Preserva la Calidad y Longevidad';
+    iconEl.innerHTML = '<i class="fas fa-shirt"></i>';
+
+    bodyEl.innerHTML = `
+      <div class="panel-hero-img">
+        <img src="assets/images/care_info.jpg" alt="Cuidado de Prendas AURA">
+      </div>
+      <p class="panel-lead">
+        Para mantener tus piezas de seda, cuero y lana como el primer día, sigue estas instrucciones especializadas recomendadas por nuestros maestros sastres:
+      </p>
+      <div class="returns-steps-list">
+        <div class="step-card">
+          <span class="step-num"><i class="fas fa-droplet"></i></span>
+          <div>
+            <h5>Prendas de Seda y Vestidos</h5>
+            <p>Lavar a mano en agua fría con jabón neutro o limpieza en seco ecológica. Evitar retorcer.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <span class="step-num"><i class="fas fa-wind"></i></span>
+          <div>
+            <h5>Chaquetas de Cuero Vacuno</h5>
+            <p>Tratar con bálsamo hidratante para cuero 1 vez al año. Guardar en funda transpirable en lugar fresco.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <span class="step-num"><i class="fas fa-temperature-arrow-down"></i></span>
+          <div>
+            <h5>Abrigos de Lana & Hoodies</h5>
+            <p>Planchado al vapor a baja temperatura. Utilizar perchas anchas para evitar deformar los hombros.</p>
+          </div>
+        </div>
+      </div>
+    `;
+    modal.classList.add('open');
+  }
+
+  function openVipPanel() {
+    titleEl.textContent = 'Club VIP & Recompensas AURA';
+    subtitleEl.textContent = 'Acceso Exclusivo y Privilegios';
+    iconEl.innerHTML = '<i class="fas fa-gem"></i>';
+
+    bodyEl.innerHTML = `
+      <div class="panel-hero-img">
+        <img src="assets/images/vip_info.jpg" alt="Club VIP AURA Atelier">
+      </div>
+      <p class="panel-lead">
+        Como miembro del Club VIP AURA, acumulas puntos con cada compra, obtienes ventas privadas anticipadas y obsequios en tu cumpleaños.
+      </p>
+      <div class="shipping-features-grid">
+        <div class="shipping-box">
+          <i class="fas fa-crown"></i>
+          <h5>Acceso Prioritario 48h</h5>
+          <p>Compra las colecciones de edición limitada antes de que se abran al público general.</p>
+        </div>
+        <div class="shipping-box">
+          <i class="fas fa-gift"></i>
+          <h5>Doble Puntuación</h5>
+          <p>Canjea cada 100 puntos por $10 de descuento en tu siguiente pedido sin mínimo de compra.</p>
+        </div>
+      </div>
+    `;
+    modal.classList.add('open');
+  }
+
+  function openCommunityPanel() {
+    titleEl.textContent = 'Comunidad & Lookbook Editorial';
+    subtitleEl.textContent = 'Inspírate con el Estilo AURA';
+    iconEl.innerHTML = '<i class="fas fa-camera-retro"></i>';
+
+    bodyEl.innerHTML = `
+      <div class="panel-hero-img">
+        <img src="assets/images/community_info.jpg" alt="Comunidad AURA Lookbook">
+      </div>
+      <p class="panel-lead">
+        Comparte tus mejores outfits en Instagram y TikTok usando el hashtag <strong>#AURAAtelier2026</strong> para aparecer en nuestro Lookbook global mensual.
+      </p>
+      <div class="generic-info-card">
+        <h4><i class="fab fa-instagram"></i> Etiquétanos @auraatelier</h4>
+        <p>Seleccionamos semanalmente las mejores fotos de nuestra comunidad y regalamos una tarjeta regalo de $200 al outfit más votado.</p>
+      </div>
+    `;
+    modal.classList.add('open');
+  }
+
+  function openFaqPanel() {
+    titleEl.textContent = 'Preguntas Frecuentes (FAQ)';
+    subtitleEl.textContent = 'Soporte y Respuestas Rápidas';
+    iconEl.innerHTML = '<i class="fas fa-circle-question"></i>';
+
+    bodyEl.innerHTML = `
+      <div class="panel-hero-img">
+        <img src="assets/images/faq_info.jpg" alt="Preguntas Frecuentes AURA">
+      </div>
+      <div class="faq-list-panel">
+        <div class="step-card" style="margin-bottom: 12px;">
+          <div>
+            <h5>¿Cuánto tarda en llegar mi pedido?</h5>
+            <p>Los envíos nacionales se entregan en 24h hábiles. Los envíos internacionales tardan entre 3 y 5 días express.</p>
+          </div>
+        </div>
+        <div class="step-card" style="margin-bottom: 12px;">
+          <div>
+            <h5>¿Puedo cambiar la talla si no me queda?</h5>
+            <p>¡Sí! Dispones de 30 días naturales sin costo adicional. Emitimos una etiqueta de transporte prepagada.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div>
+            <h5>¿Qué métodos de pago aceptan?</h5>
+            <p>Aceptamos Visa, Mastercard, American Express, PayPal, Apple Pay y Google Pay con encriptación SSL de 256 bits.</p>
+          </div>
+        </div>
+      </div>
+    `;
+    modal.classList.add('open');
   }
 
   function openGenericInfoPanel(title) {
