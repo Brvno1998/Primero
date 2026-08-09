@@ -2,7 +2,7 @@
 // AURA ATELIER - PRODUCT CATALOG DATABASE
 // ==========================================================================
 
-export const PRODUCTS = [
+const BASE_PRODUCTS = [
   {
     id: 'prod-1',
     name: 'Chaqueta de Cuero Nocturna',
@@ -196,6 +196,56 @@ export const PRODUCTS = [
     description: 'Sudadera para mujer de corte relaxed oversized en algodón felpado de tacto aterciopelado. Capucha amplia y bolsillo tipo canguro.'
   }
 ];
+
+// Generator for 100 Luxury Accessory Products
+function generate100Accessories() {
+  const accessoryTypes = [
+    { name: 'Reloj Chronograph Gold', image: 'assets/images/acc_watch.jpg', tag: 'Alta Costura', price: 280, desc: 'Reloj cronógrafo de caja en acero con baño de oro de 18k y cristal de zafiro irrayable.' },
+    { name: 'Gafas Aviador Dark Luxe', image: 'assets/images/acc_sunglasses.jpg', tag: 'Tendencia', price: 165, desc: 'Gafas de sol estilo aviador con montura metálica titanio y lentes polarizadas antirreflejo.' },
+    { name: 'Cinturón Piel Italiana Silver', image: 'assets/images/acc_belt.jpg', tag: 'Esencial', price: 95, desc: 'Cinturón de cuero vacuno graneado italiano con hebilla geométrica de latón plateado.' },
+    { name: 'Gorra Minimalist Cotton Black', image: 'assets/images/acc_cap.jpg', tag: 'Streetwear', price: 48, desc: 'Gorra de visera curva en algodón orgánico pesado con broche metálico regulable posterior.' },
+    { name: 'Set de Anillos Signet Silver/Gold', image: 'assets/images/acc_ring.jpg', tag: 'Nuevo', price: 75, desc: 'Colección de 3 anillos sello en plata de ley 925 y acabado satinado artesanal.' },
+    { name: 'Sneakers Blancas Minimal', image: 'assets/images/sneakers.jpg', tag: 'Esencial', price: 145, desc: 'Zapatillas de piel de becerro italiana con suela ultraligera de goma vulcanizada.' },
+    { name: 'Bolso de Mano Luxe Leather', image: 'assets/images/handbag.jpg', tag: 'Edición Limitada', price: 175, desc: 'Bolso estructurado en cuero graneado con cierres y detalles dorados en baño de 18k.' }
+  ];
+
+  const accessoryItems = [];
+  const colorPalettes = [
+    ['#121212', '#d4af37'],
+    ['#3e2723', '#c0c0c0'],
+    ['#ffffff', '#263238'],
+    ['#b71c1c', '#121212'],
+    ['#1b5e20', '#d4af37']
+  ];
+
+  for (let i = 1; i <= 100; i++) {
+    const base = accessoryTypes[(i - 1) % accessoryTypes.length];
+    const itemNumber = i < 10 ? `0${i}` : i;
+    const isDiscount = i % 3 === 0;
+    const origPrice = isDiscount ? Math.round(base.price * 1.25) : null;
+    
+    accessoryItems.push({
+      id: `acc-item-${i}`,
+      name: `${base.name} N°${itemNumber}`,
+      category: 'accesorios',
+      tag: base.tag,
+      price: base.price + (i % 7) * 5,
+      originalPrice: origPrice,
+      rating: parseFloat((4.5 + (i % 6) * 0.1).toFixed(1)),
+      reviews: 12 + (i * 3),
+      stock: 5 + (i % 15),
+      colors: colorPalettes[i % colorPalettes.length],
+      sizes: ['Única'],
+      image: base.image,
+      gallery: [base.image],
+      description: `${base.description} Edición numerada de colección #${itemNumber}.`
+    });
+  }
+
+  return accessoryItems;
+}
+
+export const PRODUCTS = [...BASE_PRODUCTS, ...generate100Accessories()];
 
 export const TESTIMONIALS = [
   {
