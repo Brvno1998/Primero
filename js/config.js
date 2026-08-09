@@ -9,7 +9,12 @@ export const CONFIG = {
   PROMO_CODES: {
     'AURA2026': { discount: 0.20, label: '20% OFF Especial 2026' },
     'LUXE10': { discount: 0.10, label: '10% OFF Colección Luxe' },
-    'WELCOME15': { discount: 0.15, label: '15% OFF Bienvenida' }
+    'WELCOME15': { discount: 0.15, label: '15% OFF Bienvenida' },
+    'AURA15OFF': { discount: 0.15, label: '15% OFF Club AURA' },
+    'WHEEL10': { discount: 0.10, label: '10% OFF Ruleta VIP' },
+    'WHEEL15': { discount: 0.15, label: '15% OFF Ruleta VIP' },
+    'WHEEL20': { discount: 0.20, label: '20% OFF Ruleta VIP' },
+    'FREESHIP': { discount: 0.00, freeShipping: true, label: 'Envío Express Gratis' }
   },
   STORAGE_KEYS: {
     CART: 'aura_cart',

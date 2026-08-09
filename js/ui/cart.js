@@ -81,7 +81,7 @@ export function initCart() {
 
   // Subscribe to store updates
   store.subscribe((event) => {
-    if (event === 'CART_UPDATED' || event === 'PROMO_APPLIED' || event === 'PROMO_REMOVED') {
+    if (event === 'CART_UPDATED' || event === 'PROMO_APPLIED' || event === 'PROMO_REMOVED' || event === 'CURRENCY_CHANGED') {
       renderCartUI();
     }
   });
@@ -140,7 +140,7 @@ export function renderCartUI() {
     } else {
       shippingProgressContainer.innerHTML = `
         <div class="shipping-progress-status">
-          <i class="fas fa-truck-fast"></i> Agrega <strong>$${totals.amountNeededForFreeShipping.toFixed(2)}</strong> más para <strong>ENVÍO GRATIS</strong>
+          <i class="fas fa-truck-fast"></i> Agrega <strong>${store.formatPrice(totals.amountNeededForFreeShipping)}</strong> más para <strong>ENVÍO GRATIS</strong>
         </div>
         <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${totals.freeShippingProgress}%;"></div></div>
       `;
@@ -148,23 +148,23 @@ export function renderCartUI() {
   }
 
   // Cart Subtotal / Discount / Total
-  if (cartSubtotalEl) cartSubtotalEl.textContent = `$${totals.subtotal.toFixed(2)}`;
+  if (cartSubtotalEl) cartSubtotalEl.textContent = store.formatPrice(totals.subtotal);
 
   if (cartDiscountLine && cartDiscountEl) {
     if (store.activePromo && totals.discountAmount > 0) {
       cartDiscountLine.style.display = 'flex';
-      cartDiscountEl.textContent = `-$${totals.discountAmount.toFixed(2)} (${store.activePromo.code})`;
+      cartDiscountEl.textContent = `-${store.formatPrice(totals.discountAmount)} (${store.activePromo.code})`;
     } else {
       cartDiscountLine.style.display = 'none';
     }
   }
 
   if (cartShippingEl) {
-    cartShippingEl.textContent = totals.shippingFee === 0 ? 'GRATIS' : `$${totals.shippingFee.toFixed(2)}`;
+    cartShippingEl.textContent = totals.shippingFee === 0 ? 'GRATIS' : store.formatPrice(totals.shippingFee);
     cartShippingEl.style.color = totals.shippingFee === 0 ? 'var(--color-success)' : 'inherit';
   }
 
-  if (cartTotalEl) cartTotalEl.textContent = `$${totals.finalTotal.toFixed(2)}`;
+  if (cartTotalEl) cartTotalEl.textContent = store.formatPrice(totals.finalTotal);
 
   // Cart items list
   if (cartItemsContainer) {
@@ -194,7 +194,7 @@ export function renderCartUI() {
                 <span class="qty-number">${item.quantity}</span>
                 <button class="qty-btn" data-id="${item.id}" data-size="${item.size}" data-color="${item.color}" data-change="1">+</button>
               </div>
-              <span class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</span>
+              <span class="cart-item-price">${store.formatPrice(item.price * item.quantity)}</span>
             </div>
           </div>
 

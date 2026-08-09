@@ -1,15 +1,23 @@
 // ==========================================================================
-// AURA ATELIER - CENTRALIZED REACTIVE STORE
+// AURA ATELIER - CENTRALIZED REACTIVE STORE (CURRENCY & STATE MANAGER)
 // ==========================================================================
 
 import { CONFIG } from './config.js';
 import { PRODUCTS } from './data.js';
+
+export const RATES = {
+  USD: { symbol: '$', rate: 1.0, label: 'USD ($)' },
+  EUR: { symbol: '€', rate: 0.92, label: 'EUR (€)' },
+  MXN: { symbol: '$', rate: 18.2, label: 'MXN ($)' },
+  COP: { symbol: '$', rate: 3950.0, label: 'COP ($)' }
+};
 
 class AppStore {
   constructor() {
     this.cart = this.load(CONFIG.STORAGE_KEYS.CART, []);
     this.wishlist = this.load(CONFIG.STORAGE_KEYS.WISHLIST, []);
     this.theme = this.load(CONFIG.STORAGE_KEYS.THEME, 'dark');
+    this.currency = this.load('aura_currency', 'USD');
     this.activePromo = null;
     this.listeners = new Set();
   }
@@ -43,6 +51,27 @@ class AppStore {
   // Notify all subscribers
   notify(event, payload) {
     this.listeners.forEach(fn => fn(event, payload, this));
+  }
+
+  // --- CURRENCY ACTIONS ---
+  setCurrency(currCode) {
+    if (RATES[currCode]) {
+      this.currency = currCode;
+      this.save('aura_currency', currCode);
+      this.notify('CURRENCY_CHANGED', { currency: currCode });
+    }
+  }
+
+  formatPrice(usdAmount) {
+    const rateInfo = RATES[this.currency] || RATES.USD;
+    const converted = usdAmount * rateInfo.rate;
+    if (this.currency === 'COP') {
+      return `${rateInfo.symbol}${Math.round(converted).toLocaleString('es-CO')} COP`;
+    }
+    if (this.currency === 'MXN') {
+      return `${rateInfo.symbol}${converted.toFixed(2)} MXN`;
+    }
+    return `${rateInfo.symbol}${converted.toFixed(2)}`;
   }
 
   // --- THEME ACTIONS ---
@@ -162,10 +191,11 @@ class AppStore {
     
     let discountAmount = 0;
     if (this.activePromo) {
-      discountAmount = subtotal * this.activePromo.discount;
+      discountAmount = subtotal * (this.activePromo.discount || 0);
     }
 
-    const shippingFee = subtotal >= CONFIG.FREE_SHIPPING_THRESHOLD || subtotal === 0 ? 0 : CONFIG.SHIPPING_FEE;
+    const isFreeShipPromo = this.activePromo && this.activePromo.freeShipping;
+    const shippingFee = (subtotal >= CONFIG.FREE_SHIPPING_THRESHOLD || subtotal === 0 || isFreeShipPromo) ? 0 : CONFIG.SHIPPING_FEE;
     const finalTotal = Math.max(0, subtotal - discountAmount + shippingFee);
 
     const amountNeededForFreeShipping = Math.max(0, CONFIG.FREE_SHIPPING_THRESHOLD - subtotal);
@@ -179,7 +209,7 @@ class AppStore {
       finalTotal,
       amountNeededForFreeShipping,
       freeShippingProgress,
-      isFreeShipping: subtotal >= CONFIG.FREE_SHIPPING_THRESHOLD
+      isFreeShipping: subtotal >= CONFIG.FREE_SHIPPING_THRESHOLD || isFreeShipPromo
     };
   }
 }

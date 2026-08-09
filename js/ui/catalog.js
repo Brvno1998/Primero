@@ -258,10 +258,12 @@ export function initCatalog() {
     });
   }
 
-  // Subscribe to store updates to keep product grid wishlist icons synchronized
+  // Subscribe to store updates to keep product grid wishlist icons & currency synchronized
   store.subscribe((event) => {
     if (event === 'WISHLIST_UPDATED') {
       updateWishlistButtons();
+    } else if (event === 'CURRENCY_CHANGED') {
+      renderProducts();
     }
   });
 
@@ -378,8 +380,8 @@ export function renderProducts() {
 
           <div class="product-bottom">
             <div class="product-price">
-              $${prod.price.toFixed(2)}
-              ${hasDiscount ? `<span class="original-price">$${prod.originalPrice.toFixed(2)}</span>` : ''}
+              ${store.formatPrice(prod.price)}
+              ${hasDiscount ? `<span class="original-price">${store.formatPrice(prod.originalPrice)}</span>` : ''}
             </div>
             <button class="add-cart-btn" data-id="${prod.id}" title="Agregar al Carrito">
               <i class="fas fa-plus"></i>

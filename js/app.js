@@ -11,6 +11,7 @@ import { initCheckout } from './ui/checkout.js';
 import { initNavigation } from './ui/navigation.js';
 import { initFooterPanels } from './ui/footerPanels.js';
 import { initAdvancedFeatures } from './ui/features.js';
+import { initNewFeatures } from './ui/newFeatures.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 AURA Atelier 2026 App Initialized');
@@ -25,4 +26,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initFooterPanels();
   initAdvancedFeatures();
+  initNewFeatures();
 });
