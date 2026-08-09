@@ -22,12 +22,18 @@ export function initNavigation() {
       }
     });
 
-    // Close menu when link is clicked
+    // Close menu when link is clicked & trigger category if specified
     navMenu.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
         navMenu.classList.remove('active');
         const icon = mobileToggle.querySelector('i');
         if (icon) icon.className = 'fas fa-bars';
+
+        if (link.dataset.category) {
+          const cat = link.dataset.category;
+          const tabBtn = document.querySelector(`.category-tabs .tab-btn[data-category="${cat}"]`);
+          if (tabBtn) tabBtn.click();
+        }
       });
     });
   }
