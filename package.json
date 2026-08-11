@@ -1,0 +1,24 @@
+{
+  "name": "aura-atelier-ecommerce",
+  "version": "2.0.0",
+  "description": "AURA Atelier - Luxury E-Commerce Platform & REST API Backend",
+  "main": "server/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node server/server.js"
+  },
+  "keywords": [
+    "ecommerce",
+    "fashion",
+    "express",
+    "node",
+    "api"
+  ],
+  "author": "AURA Atelier Team",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}
