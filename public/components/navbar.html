@@ -1,0 +1,53 @@
+<!-- Navigation Bar Component -->
+<header class="navbar">
+  <div class="container nav-container">
+    <a href="#" class="brand-logo">
+      AURA<span>.</span>
+    </a>
+
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#hero" class="nav-link active">Inicio</a></li>
+        <li><a href="#catalog" class="nav-link nav-cat-link" data-category="todos"><i class="fas fa-layer-group" style="color: var(--color-accent);"></i> Colección Completa</a></li>
+        <li><a href="#catalog" class="nav-link nav-cat-link" data-category="hombres"><i class="fas fa-mars" style="color: var(--color-accent);"></i> Hombre</a></li>
+        <li><a href="#catalog" class="nav-link nav-cat-link" data-category="mujeres"><i class="fas fa-venus" style="color: var(--color-accent);"></i> Mujer</a></li>
+        <li><a href="#flash-sales-section" class="nav-link" style="color: #ef4444; font-weight: bold;"><i class="fas fa-bolt"></i> Flash Sale</a></li>
+        <li><button id="open-wheel-btn" class="nav-link" style="background: none; border: none; cursor: pointer; color: var(--color-accent); font-weight: bold;"><i class="fas fa-dharmachakra"></i> Ruleta VIP</button></li>
+        <li><a href="#testimonials" class="nav-link">Reseñas</a></li>
+        <li><a href="#faq" class="nav-link">Preguntas</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <!-- Currency Selector Dropdown -->
+      <select id="currency-select" class="currency-select" aria-label="Seleccionar Divisa" style="background: var(--color-bg-secondary); border: 1px solid var(--color-border); color: var(--color-accent); font-weight: bold; padding: 6px 10px; border-radius: var(--radius-full); cursor: pointer; font-size: 0.82rem;">
+        <option value="USD">USD ($)</option>
+        <option value="EUR">EUR (€)</option>
+        <option value="MXN">MXN ($)</option>
+        <option value="COP">COP ($)</option>
+      </select>
+
+      <!-- Theme Toggle Button -->
+      <button class="icon-btn" id="theme-toggle-btn" aria-label="Cambiar Tema">
+        <i class="fas fa-sun"></i>
+      </button>
+
+      <!-- Wishlist Button -->
+      <button class="icon-btn" id="wishlist-btn" aria-label="Ver Favoritos">
+        <i class="far fa-heart"></i>
+        <span class="badge" id="wishlist-badge">0</span>
+      </button>
+
+      <!-- Cart Button -->
+      <button class="icon-btn" id="cart-btn" aria-label="Ver Carrito">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="badge" id="cart-badge">0</span>
+      </button>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="icon-btn mobile-toggle" id="mobile-toggle" aria-label="Menú">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,152 @@
+<!-- Services Hub & Sustainability Component -->
+<section class="services-hub-section" id="services-hub">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="section-subtitle"><i class="fas fa-crown"></i> Servicios Interactivos</span>
+      <h2 class="section-title">Centro de Experiencia AURA</h2>
+    </div>
+
+    <div class="hub-grid">
+      <!-- Interactive Panel 1: Size Calculator -->
+      <div class="hub-panel-card" id="size-guide-section">
+        <div class="hub-card-header">
+          <div class="hub-card-icon"><i class="fas fa-ruler-combined"></i></div>
+          <div>
+            <span class="hub-card-tag">Ajuste Perfecto</span>
+            <h4>Calculadora de Tallas</h4>
+          </div>
+        </div>
+        <div class="hub-card-img">
+          <img src="assets/images/size_guide.jpg" alt="Guía de Tallas AURA">
+        </div>
+        <div class="hub-card-body">
+          <p>Ingresa tus medidas corporales para obtener tu recomendación exacta de talla:</p>
+          <div class="calc-inputs">
+            <div class="calc-group">
+              <label>Pecho / Busto (cm):</label>
+              <input type="number" id="page-calc-chest" placeholder="Ej. 96">
+            </div>
+            <div class="calc-group">
+              <label>Cintura (cm):</label>
+              <input type="number" id="page-calc-waist" placeholder="Ej. 80">
+            </div>
+          </div>
+          <button class="btn-primary" id="page-calc-btn" style="width: 100%; margin-top: 14px;">Calcular Talla</button>
+          <div id="page-calc-result" class="calc-result" style="display: none;"></div>
+        </div>
+      </div>
+
+      <!-- Interactive Panel 2: Live Order Tracking -->
+      <div class="hub-panel-card" id="tracking-section">
+        <div class="hub-card-header">
+          <div class="hub-card-icon"><i class="fas fa-truck-fast"></i></div>
+          <div>
+            <span class="hub-card-tag">Rastreo Satelital</span>
+            <h4>Estado de tu Pedido</h4>
+          </div>
+        </div>
+        <div class="hub-card-img">
+          <img src="assets/images/tracking_info.jpg" alt="Rastreo de Pedido AURA">
+        </div>
+        <div class="hub-card-body">
+          <p>Consulta la ubicación en tiempo real de tu envío express:</p>
+          <form id="page-track-form">
+            <div class="search-input-group" style="width: 100%; margin-bottom: 12px;">
+              <i class="fas fa-barcode"></i>
+              <input type="text" id="page-track-id" class="search-input" placeholder="Ej: #AURA-98412" value="#AURA-98412" style="width: 100%;" required>
+            </div>
+            <button type="submit" class="btn-secondary" style="width: 100%;">Consultar Estado</button>
+          </form>
+          <div class="mini-status-box" style="margin-top: 12px;">
+            <span style="color: var(--color-success); font-weight: 700;"><i class="fas fa-circle-check"></i> En tránsito:</span> Entrega estimada en 24h hábiles.
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Panel 3: 30-Day Guarantee -->
+      <div class="hub-panel-card" id="returns-section">
+        <div class="hub-card-header">
+          <div class="hub-card-icon"><i class="fas fa-shield-halved"></i></div>
+          <div>
+            <span class="hub-card-tag">Garantía Total</span>
+            <h4>Devoluciones 30 Días</h4>
+          </div>
+        </div>
+        <div class="hub-card-img">
+          <img src="assets/images/returns_info.jpg" alt="Devoluciones AURA">
+        </div>
+        <div class="hub-card-body">
+          <p>Sin costo adicional, sin preguntas. Generamos tu etiqueta de retorno en 1 clic:</p>
+          <div class="badge-benefits-list">
+            <span><i class="fas fa-check"></i> Etiqueta prepagada</span>
+            <span><i class="fas fa-check"></i> Retiro a domicilio</span>
+            <span><i class="fas fa-check"></i> Reembolso en 24h</span>
+          </div>
+          <button class="btn-primary" id="page-returns-btn" style="width: 100%; margin-top: 14px;">Gestionar Devolución</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sustainability & Eco Commitment Section -->
+<section class="sustainability-section" id="sustainability-section">
+  <div class="container">
+    <div class="sustainability-card">
+      <div class="sustainability-img">
+        <img src="assets/images/sustainability_info.jpg" alt="Sostenibilidad AURA">
+      </div>
+      <div class="sustainability-content">
+        <span class="tagline"><i class="fas fa-leaf"></i> Moda Consciente 2026</span>
+        <h2 class="section-title">Compromiso con el Medio Ambiente</h2>
+        <p>
+          En AURA Atelier confeccionamos prendas éticas con algodón 100% orgánico certificado GOTS, tintes naturales sin químicos pesados y packaging biodegradable reciclable.
+        </p>
+        <div class="eco-metrics-grid">
+          <div class="metric-box">
+            <span class="metric-num">80%</span>
+            <span class="metric-label">Menos Consumo de Agua</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-num">100%</span>
+            <span class="metric-label">Tejidos Biodegradables</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-num">0%</span>
+            <span class="metric-label">Residuos Plásticos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIP Club Section -->
+<section class="vip-club-section" id="vip-section">
+  <div class="container">
+    <div class="vip-card">
+      <div class="vip-content">
+        <span class="tagline" style="background: rgba(230, 197, 148, 0.15); color: var(--color-accent);"><i class="fas fa-crown"></i> Privilegios Exclusivos</span>
+        <h2 class="section-title">Únete al Club VIP AURA</h2>
+        <p>Obtén un <strong>15% OFF en tu primera compra</strong>, acceso anticipado 48h a colecciones de edición limitada y envíos express gratuitos en todos tus pedidos.</p>
+        <div class="vip-benefits-grid">
+          <div class="vip-benefit-item">
+            <i class="fas fa-star"></i>
+            <span>Doble puntuación por compra</span>
+          </div>
+          <div class="vip-benefit-item">
+            <i class="fas fa-gift"></i>
+            <span>Regalo de cumpleaños</span>
+          </div>
+          <div class="vip-benefit-item">
+            <i class="fas fa-bolt"></i>
+            <span>Envíos express gratis</span>
+          </div>
+        </div>
+      </div>
+      <div class="vip-img">
+        <img src="assets/images/vip_info.jpg" alt="Club VIP AURA">
+      </div>
+    </div>
+  </div>
+</section>

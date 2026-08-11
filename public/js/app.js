@@ -2,6 +2,7 @@
 // AURA ATELIER - MAIN ENTRY POINT MODULE
 // ==========================================================================
 
+import { loadComponents } from './ui/componentsLoader.js';
 import { initTheme } from './ui/theme.js';
 import { initCatalog } from './ui/catalog.js';
 import { initCart } from './ui/cart.js';
@@ -13,8 +14,11 @@ import { initFooterPanels } from './ui/footerPanels.js';
 import { initAdvancedFeatures } from './ui/features.js';
 import { initNewFeatures } from './ui/newFeatures.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   console.log('🚀 AURA Atelier 2026 App Initialized');
+
+  // Load HTML Components (Modular Component Architecture)
+  await loadComponents();
 
   // Initialize UI Subsystems
   initTheme();
